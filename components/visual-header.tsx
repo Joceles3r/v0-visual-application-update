@@ -286,16 +286,20 @@ export function VisualHeader() {
           </DropdownMenu>
 
           {/* Auth Buttons */}
-          <Button
-            variant="ghost"
-            className="bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 h-10 px-5 text-sm font-medium transition-all duration-300 hover:border-purple-500/50 hover:scale-105 ml-2"
-          >
-            <LogIn className="mr-2 h-4 w-4" /> Se connecter
-          </Button>
+          <Link href="/login">
+            <Button
+              variant="ghost"
+              className="bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 h-10 px-5 text-sm font-medium transition-all duration-300 hover:border-purple-500/50 hover:scale-105 ml-2"
+            >
+              <LogIn className="mr-2 h-4 w-4" /> Se connecter
+            </Button>
+          </Link>
 
-          <Button className="bg-gradient-to-r from-purple-600 via-violet-600 to-fuchsia-600 hover:from-purple-500 hover:via-violet-500 hover:to-fuchsia-500 text-white rounded-lg border border-white/20 h-10 px-6 text-sm font-bold shadow-lg shadow-purple-900/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-900/70">
-            <UserPlus className="mr-2 h-4 w-4" /> Créer un Compte
-          </Button>
+          <Link href="/signup">
+            <Button className="bg-gradient-to-r from-purple-600 via-violet-600 to-fuchsia-600 hover:from-purple-500 hover:via-violet-500 hover:to-fuchsia-500 text-white rounded-lg border border-white/20 h-10 px-6 text-sm font-bold shadow-lg shadow-purple-900/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-900/70">
+              <UserPlus className="mr-2 h-4 w-4" /> Créer un Compte
+            </Button>
+          </Link>
         </div>
       </div>
     </header>
