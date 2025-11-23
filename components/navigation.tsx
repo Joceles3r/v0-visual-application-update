@@ -1,58 +1,29 @@
-"use client"
-
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Video, Trophy, Upload, User } from "lucide-react"
 import { SignOutButton } from "./signout-button"
-import { useEffect, useState } from "react"
-import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { LanguageSelector } from "./language-selector"
+import { getSupabaseServerClient } from "@/lib/supabase/server"
 
-export function Navigation() {
-  const [user, setUser] = useState<any>(null)
-  const [profile, setProfile] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+export async function Navigation() {
+  const supabase = await getSupabaseServerClient()
 
-  useEffect(() => {
-    const supabase = getSupabaseBrowserClient()
+  let user = null
+  let profile = null
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        // Fetch profile
-        supabase
-          .from("users")
-          .select("*")
-          .eq("id", session.user.id)
-          .single()
-          .then(({ data }) => {
-            setProfile(data)
-            setLoading(false)
-          })
-      } else {
-        setLoading(false)
-      }
-    })
-
-    // Listen for auth changes
+  try {
     const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        supabase
-          .from("users")
-          .select("*")
-          .eq("id", session.user.id)
-          .single()
-          .then(({ data }) => setProfile(data))
-      } else {
-        setProfile(null)
-      }
-    })
+      data: { user: authUser },
+    } = await supabase.auth.getUser()
+    user = authUser
 
-    return () => subscription.unsubscribe()
-  }, [])
+    if (user) {
+      const { data: profileData } = await supabase.from("users").select("*").eq("id", user.id).single()
+      profile = profileData
+    }
+  } catch (error) {
+    console.log("[v0] Auth check failed, running in offline mode")
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
@@ -90,9 +61,11 @@ export function Navigation() {
         </div>
 
         <div className="flex items-center gap-3">
-          {loading ? (
-            <div className="w-20 h-9 bg-muted animate-pulse rounded" />
-          ) : user ? (
+          <LanguageSelector />
+
+          <div className="hidden sm:block w-px h-6 bg-border" />
+
+          {user ? (
             <>
               {profile && (
                 <Link
@@ -113,10 +86,10 @@ export function Navigation() {
           ) : (
             <>
               <Link href="/login">
-                <Button variant="ghost">Log in</Button>
+                <Button variant="ghost">Se connecter</Button>
               </Link>
               <Link href="/signup">
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">Sign up</Button>
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">S'inscrire</Button>
               </Link>
             </>
           )}

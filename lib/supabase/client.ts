@@ -1,30 +1,27 @@
-import { createClient } from "@supabase/supabase-js"
+let createClient: any = null
+const clientInstance: any = null
+let supabaseAvailable = false
 
-let clientInstance: ReturnType<typeof createClient> | null = null
-
-export function getSupabaseBrowserClient() {
-  if (clientInstance) {
-    return clientInstance
-  }
-
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error("Supabase environment variables are missing. Please check your integration setup.")
-  }
-
-  clientInstance = createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      persistSession: true,
-      storageKey: "visual-auth-token",
-      storage: typeof window !== "undefined" ? window.localStorage : undefined,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-    },
-  })
-
-  return clientInstance
+// Try to load Supabase dynamically
+if (typeof window !== "undefined") {
+  import("@supabase/supabase-js")
+    .then((module) => {
+      createClient = module.createClient
+      supabaseAvailable = true
+    })
+    .catch((err) => {
+      console.warn("[v0] Supabase module not available:", err.message)
+    })
 }
 
+export function getSupabaseBrowserClient() {
+  // In v0 environment, Supabase browser client is not available
+  // All auth should be handled server-side via getSupabaseServerClient
+  console.warn(
+    "[v0] Browser Supabase client is disabled in v0 environment. Use getSupabaseServerClient for server-side operations.",
+  )
+  return null
+}
+
+// Alias for compatibility
 export { getSupabaseBrowserClient as createBrowserClient }

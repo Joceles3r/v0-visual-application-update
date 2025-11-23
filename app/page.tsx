@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import {
   Play,
   Film,
@@ -14,16 +15,25 @@ import {
   ChevronRight,
   Users,
   Target,
-  Coins,
+  CheckCircle,
+  XCircle,
+  Info,
+  Megaphone,
+  Mails as Masks,
+  Shield,
+  Clock,
+  DollarSign,
 } from "lucide-react"
 import { VisualHeader } from "@/components/visual-header"
 import { FloatingParticles } from "@/components/floating-particles"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { TrafficLight } from "@/components/traffic-light" // Keep this import
+import { TrafficLight } from "@/components/traffic-light"
 
 export default function Home() {
-  const [activeRole, setActiveRole] = useState<"visitor" | "creator" | "investor">("visitor")
+  const [activeRole, setActiveRole] = useState<"visitor" | "creator" | "investor" | "affiliate" | "viewer-investor">(
+    "visitor",
+  )
 
   return (
     <main className="min-h-screen relative overflow-hidden bg-gradient-to-b from-[#0a0320] via-[#1a0b2e] to-[#050214]">
@@ -49,6 +59,21 @@ export default function Home() {
           <p className="max-w-xl text-lg md:text-2xl text-white/90 font-light tracking-widest uppercase border-b-2 border-white/20 pb-4 px-8 inline-block shadow-[0_4px_30px_rgba(139,92,246,0.4)]">
             Regarde • Investis • Gagne
           </p>
+
+          <div className="grid grid-cols-3 gap-8 mt-12 glass-card rounded-2xl p-8 border border-white/10">
+            <div className="text-center">
+              <div className="text-4xl font-black text-green-400">856</div>
+              <div className="text-xs text-gray-400 uppercase tracking-wider mt-1">Projets Financés</div>
+            </div>
+            <div className="text-center border-x border-white/10">
+              <div className="text-4xl font-black text-yellow-400">€8.5M</div>
+              <div className="text-xs text-gray-400 uppercase tracking-wider mt-1">Fonds Levés</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-black text-purple-400">45.6K</div>
+              <div className="text-xs text-gray-400 uppercase tracking-wider mt-1">Membres</div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -61,13 +86,12 @@ export default function Home() {
             projets audiovisuels de demain.
           </p>
 
-          <div className="max-w-5xl mx-auto mb-20 flex justify-center">
+          <div className="max-w-6xl mx-auto mb-20 flex justify-center">
             <div className="glass-card rounded-3xl overflow-hidden shadow-2xl shadow-purple-900/50 border-2 border-white/10 w-full">
-              {/* Tabs */}
-              <div className="grid grid-cols-3 border-b border-white/10">
+              <div className="grid grid-cols-2 md:grid-cols-5 border-b border-white/10">
                 <button
                   onClick={() => setActiveRole("visitor")}
-                  className={`py-6 px-4 text-sm md:text-base font-bold uppercase tracking-wider transition-all duration-300 ${
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
                     activeRole === "visitor"
                       ? "bg-gradient-to-br from-blue-600/40 to-blue-900/40 text-white border-b-4 border-blue-400"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
@@ -78,18 +102,18 @@ export default function Home() {
                 </button>
                 <button
                   onClick={() => setActiveRole("creator")}
-                  className={`py-6 px-4 text-sm md:text-base font-bold uppercase tracking-wider transition-all duration-300 ${
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
                     activeRole === "creator"
                       ? "bg-gradient-to-br from-purple-600/40 to-purple-900/40 text-white border-b-4 border-purple-400"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   <Film className="w-5 h-5 mx-auto mb-2" />
-                  Porteur de Projet
+                  Porteur
                 </button>
                 <button
                   onClick={() => setActiveRole("investor")}
-                  className={`py-6 px-4 text-sm md:text-base font-bold uppercase tracking-wider transition-all duration-300 ${
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
                     activeRole === "investor"
                       ? "bg-gradient-to-br from-green-600/40 to-green-900/40 text-white border-b-4 border-green-400"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
@@ -98,36 +122,115 @@ export default function Home() {
                   <Wallet className="w-5 h-5 mx-auto mb-2" />
                   Investisseur
                 </button>
+                <button
+                  onClick={() => setActiveRole("affiliate")}
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+                    activeRole === "affiliate"
+                      ? "bg-gradient-to-br from-cyan-600/40 to-cyan-900/40 text-white border-b-4 border-cyan-400"
+                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  <Megaphone className="w-5 h-5 mx-auto mb-2" />
+                  Infoporteur
+                </button>
+                <button
+                  onClick={() => setActiveRole("viewer-investor")}
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 col-span-2 md:col-span-1 ${
+                    activeRole === "viewer-investor"
+                      ? "bg-gradient-to-br from-amber-600/40 to-amber-900/40 text-white border-b-4 border-amber-400"
+                      : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  <Masks className="w-5 h-5 mx-auto mb-2" />
+                  Investi-lecteur
+                </button>
               </div>
 
               {/* Tab Content */}
               <div className="p-8 md:p-12">
                 {activeRole === "visitor" && (
                   <div className="animate-fadeIn">
-                    <h3 className="text-3xl md:text-4xl font-black text-white mb-6">Découvrez VISUAL Gratuitement</h3>
-                    <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                      Explorez des milliers de projets créatifs, suivez vos favoris et rejoignez une communauté
-                      passionnée.
+                    <div className="flex items-center justify-center mb-4">
+                      <Badge className="bg-blue-500/20 text-blue-300 border-blue-400">Gratuit • Accès Illimité</Badge>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-black text-white mb-4">Explorez VISUAL Gratuitement</h3>
+                    <p className="text-gray-300 mb-6 text-base leading-relaxed">
+                      Découvrez tous les projets créatifs, suivez vos favoris, commentez et gagnez des VISUpoints sans
+                      dépenser un centime.
                     </p>
-                    <div className="grid md:grid-cols-3 gap-6 mb-10">
-                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6 text-center">
-                        <Eye className="w-8 h-8 text-blue-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Accès Illimité</h4>
-                        <p className="text-sm text-gray-400">Explorez tous les projets</p>
+
+                    <div className="grid md:grid-cols-2 gap-4 mb-8 text-left">
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Accès Illimité</p>
+                            <p className="text-sm text-gray-400">Tous les projets, sans restriction</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Bandes-annonces HD</p>
+                            <p className="text-sm text-gray-400">Streaming haute qualité gratuit</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Favoris & Suivis</p>
+                            <p className="text-sm text-gray-400">Créez votre liste personnalisée</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Commentaires</p>
+                            <p className="text-sm text-gray-400">Participez aux discussions</p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6 text-center">
-                        <Star className="w-8 h-8 text-blue-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Favoris</h4>
-                        <p className="text-sm text-gray-400">Suivez vos projets préférés</p>
-                      </div>
-                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6 text-center">
-                        <Users className="w-8 h-8 text-blue-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Communauté</h4>
-                        <p className="text-sm text-gray-400">Rejoignez la discussion</p>
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">VISUpoints</p>
+                            <p className="text-sm text-gray-400">5 pts/jour + bonus actions</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Notifications</p>
+                            <p className="text-sm text-gray-400">Alertes projets favoris</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <XCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Investissement</p>
+                            <p className="text-sm text-gray-400">Non disponible (visiteur)</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <XCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Revenus</p>
+                            <p className="text-sm text-gray-400">Non disponible (visiteur)</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <Button className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white rounded-full px-12 py-8 h-auto text-lg font-bold shadow-lg shadow-blue-900/50 hover:scale-105 transition-all">
-                      Continuer en Visiteur
+
+                    <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6 mb-8">
+                      <p className="text-sm text-blue-300">
+                        <Info className="w-4 h-4 inline mr-2" />
+                        <strong>Astuce:</strong> Gagnez 100 VISUpoints à l'inscription + 5 points par jour de connexion!
+                      </p>
+                    </div>
+
+                    <Button className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white rounded-full px-12 py-6 h-auto text-lg font-bold shadow-lg shadow-blue-900/50 hover:scale-105 transition-all">
+                      Créer un Compte Gratuit
                       <ChevronRight className="ml-2 w-5 h-5" />
                     </Button>
                   </div>
@@ -135,30 +238,115 @@ export default function Home() {
 
                 {activeRole === "creator" && (
                   <div className="animate-fadeIn">
-                    <h3 className="text-3xl md:text-4xl font-black text-white mb-6">Financez Votre Projet Créatif</h3>
-                    <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                      Présentez votre projet à une communauté engagée et obtenez le financement nécessaire pour le
-                      réaliser.
+                    <div className="flex items-center justify-center mb-4">
+                      <Badge className="bg-purple-500/20 text-purple-300 border-purple-400">
+                        Financement Participatif
+                      </Badge>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-black text-white mb-4">Financez Votre Projet Créatif</h3>
+                    <p className="text-gray-300 mb-6 text-base leading-relaxed">
+                      Présentez votre vision à une communauté de 45 000+ membres passionnés et levez jusqu'à 250 000€
+                      pour réaliser votre œuvre.
                     </p>
-                    <div className="grid md:grid-cols-3 gap-6 mb-10">
+
+                    <div className="grid md:grid-cols-4 gap-4 mb-8">
                       <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-6 text-center">
-                        <Film className="w-8 h-8 text-purple-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Soumettez</h4>
-                        <p className="text-sm text-gray-400">Présentez votre vision</p>
+                        <div className="w-12 h-12 rounded-full bg-purple-500/30 flex items-center justify-center mx-auto mb-3">
+                          <span className="text-xl font-black text-purple-300">1</span>
+                        </div>
+                        <h4 className="font-bold text-white mb-2 text-sm">Soumettez</h4>
+                        <p className="text-xs text-gray-400">Dossier complet + bande-annonce</p>
                       </div>
                       <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-6 text-center">
-                        <Target className="w-8 h-8 text-purple-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Financez</h4>
-                        <p className="text-sm text-gray-400">Atteignez vos objectifs</p>
+                        <div className="w-12 h-12 rounded-full bg-purple-500/30 flex items-center justify-center mx-auto mb-3">
+                          <span className="text-xl font-black text-purple-300">2</span>
+                        </div>
+                        <h4 className="font-bold text-white mb-2 text-sm">Validation</h4>
+                        <p className="text-xs text-gray-400">Sous 48-72h par notre équipe</p>
                       </div>
                       <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-6 text-center">
-                        <Trophy className="w-8 h-8 text-purple-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Réalisez</h4>
-                        <p className="text-sm text-gray-400">Créez votre œuvre</p>
+                        <div className="w-12 h-12 rounded-full bg-purple-500/30 flex items-center justify-center mx-auto mb-3">
+                          <span className="text-xl font-black text-purple-300">3</span>
+                        </div>
+                        <h4 className="font-bold text-white mb-2 text-sm">Campagne</h4>
+                        <p className="text-xs text-gray-400">30-90 jours de financement</p>
+                      </div>
+                      <div className="bg-purple-500/10 border border-purple-500/30 rounded-xl p-6 text-center">
+                        <div className="w-12 h-12 rounded-full bg-purple-500/30 flex items-center justify-center mx-auto mb-3">
+                          <span className="text-xl font-black text-purple-300">4</span>
+                        </div>
+                        <h4 className="font-bold text-white mb-2 text-sm">Production</h4>
+                        <p className="text-xs text-gray-400">Réalisez votre œuvre</p>
                       </div>
                     </div>
-                    <Button className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 text-white rounded-full px-12 py-8 h-auto text-lg font-bold shadow-lg shadow-purple-900/50 hover:scale-105 transition-all">
-                      Déposer un Projet
+
+                    <div className="grid md:grid-cols-2 gap-6 mb-8">
+                      <div className="space-y-3 text-left">
+                        <h4 className="text-white font-bold mb-3">✅ Ce qui est inclus</h4>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Page projet dédiée</p>
+                            <p className="text-sm text-gray-400">Présentation complète avec médias HD</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Outils de promotion</p>
+                            <p className="text-sm text-gray-400">Kit marketing + réseaux sociaux</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Support dédié</p>
+                            <p className="text-sm text-gray-400">Accompagnement campagne</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">0€ si échec</p>
+                            <p className="text-sm text-gray-400">Remboursement intégral investisseurs</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="space-y-3 text-left">
+                        <h4 className="text-white font-bold mb-3">💰 Frais & Conditions</h4>
+                        <div className="flex items-start gap-3">
+                          <DollarSign className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">5% de frais plateforme</p>
+                            <p className="text-sm text-gray-400">Prélevés uniquement si succès</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Shield className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Compte séquestre</p>
+                            <p className="text-sm text-gray-400">Fonds sécurisés jusqu'à objectif</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Clock className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Durée: 30-90 jours</p>
+                            <p className="text-sm text-gray-400">Vous choisissez la durée</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Target className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Taux de succès: 68.6%</p>
+                            <p className="text-sm text-gray-400">856 projets financés sur 1247</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 text-white rounded-full px-12 py-6 h-auto text-lg font-bold shadow-lg shadow-purple-900/50 hover:scale-105 transition-all">
+                      Soumettre Mon Projet
                       <ChevronRight className="ml-2 w-5 h-5" />
                     </Button>
                   </div>
@@ -166,31 +354,339 @@ export default function Home() {
 
                 {activeRole === "investor" && (
                   <div className="animate-fadeIn">
-                    <h3 className="text-3xl md:text-4xl font-black text-white mb-6">
+                    <div className="flex items-center justify-center mb-4">
+                      <Badge className="bg-green-500/20 text-green-300 border-green-400">
+                        Dès 10€ • ROI Moyen 12.8%
+                      </Badge>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
                       Investissez et Générez des Revenus
                     </h3>
-                    <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                      Participez au financement de projets prometteurs dès 10€ et recevez une part des revenus générés.
+                    <p className="text-gray-300 mb-6 text-base leading-relaxed">
+                      Devenez copropriétaire de projets prometteurs dès 10€ et recevez une part proportionnelle des
+                      revenus générés (box-office, streaming, VOD).
                     </p>
-                    <div className="grid md:grid-cols-3 gap-6 mb-10">
-                      <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center">
-                        <Wallet className="w-8 h-8 text-green-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Dès 10€</h4>
-                        <p className="text-sm text-gray-400">Investissement accessible</p>
-                      </div>
-                      <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center">
-                        <Coins className="w-8 h-8 text-green-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Revenus</h4>
-                        <p className="text-sm text-gray-400">Parts proportionnelles</p>
-                      </div>
-                      <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6 text-center">
-                        <TrendingUp className="w-8 h-8 text-green-400 mx-auto mb-3" />
-                        <h4 className="font-bold text-white mb-2">Sécurisé</h4>
-                        <p className="text-sm text-gray-400">Investissement équitable</p>
+
+                    <div className="bg-gradient-to-br from-green-500/10 to-green-900/10 border border-green-500/30 rounded-2xl p-6 mb-8">
+                      <h4 className="text-white font-bold mb-4 text-center">💡 Exemple d'Investissement</h4>
+                      <div className="grid md:grid-cols-3 gap-6 text-center">
+                        <div>
+                          <div className="text-3xl font-black text-green-400 mb-2">€100</div>
+                          <div className="text-xs text-gray-400">Vous investissez</div>
+                          <div className="text-sm text-white mt-1">= 10 parts</div>
+                        </div>
+                        <div className="border-x border-green-500/20">
+                          <div className="text-3xl font-black text-yellow-400 mb-2">€10K</div>
+                          <div className="text-xs text-gray-400">Total levé</div>
+                          <div className="text-sm text-white mt-1">= Vous possédez 1%</div>
+                        </div>
+                        <div>
+                          <div className="text-3xl font-black text-purple-400 mb-2">€100K</div>
+                          <div className="text-xs text-gray-400">Revenus générés</div>
+                          <div className="text-sm text-green-400 mt-1 font-bold">= Vous gagnez €1K</div>
+                        </div>
                       </div>
                     </div>
-                    <Button className="bg-gradient-to-r from-green-600 to-green-800 hover:from-green-500 hover:to-green-700 text-white rounded-full px-12 py-8 h-auto text-lg font-bold shadow-lg shadow-green-900/50 hover:scale-105 transition-all">
-                      Investir sur un Projet
+
+                    <div className="grid md:grid-cols-2 gap-6 mb-8">
+                      <div className="space-y-3 text-left">
+                        <h4 className="text-white font-bold mb-3">✨ Avantages Investisseur</h4>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Investissement minimum: 10€</p>
+                            <p className="text-sm text-gray-400">Accessible à tous les budgets</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Parts proportionnelles</p>
+                            <p className="text-sm text-gray-400">Plus vous investissez, plus vous gagnez</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Diversification</p>
+                            <p className="text-sm text-gray-400">Investissez dans plusieurs projets</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Suivi en temps réel</p>
+                            <p className="text-sm text-gray-400">Tableau de bord complet</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="space-y-3 text-left">
+                        <h4 className="text-white font-bold mb-3">🔒 Sécurité & Garanties</h4>
+                        <div className="flex items-start gap-3">
+                          <Shield className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Remboursement si échec</p>
+                            <p className="text-sm text-gray-400">100% remboursé si objectif non atteint</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Shield className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Maximum 10K€ par projet</p>
+                            <p className="text-sm text-gray-400">Investissement équitable et limité</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Shield className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Agrément ACPR</p>
+                            <p className="text-sm text-gray-400">Plateforme réglementée</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <Trophy className="w-5 h-5 text-yellow-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">ROI moyen: 12.8%</p>
+                            <p className="text-sm text-gray-400">€1.2M+ distribués aux investisseurs</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button className="bg-gradient-to-r from-green-600 to-green-800 hover:from-green-500 hover:to-green-700 text-white rounded-full px-12 py-6 h-auto text-lg font-bold shadow-lg shadow-green-900/50 hover:scale-105 transition-all">
+                      Commencer à Investir
+                      <ChevronRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </div>
+                )}
+
+                {activeRole === "affiliate" && (
+                  <div className="animate-fadeIn">
+                    <div className="flex items-center justify-center mb-4">
+                      <Badge className="bg-cyan-500/20 text-cyan-300 border-cyan-400">
+                        Commission 5-12% • Revenus Passifs
+                      </Badge>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-black text-white mb-4">
+                      Gagnez en Partageant des Projets
+                    </h3>
+                    <p className="text-gray-300 mb-6 text-base leading-relaxed">
+                      Devenez ambassadeur VISUAL et gagnez des commissions sur chaque investissement généré via vos
+                      liens de parrainage. Aucun investissement requis!
+                    </p>
+
+                    <div className="bg-gradient-to-br from-cyan-500/10 to-cyan-900/10 border border-cyan-500/30 rounded-2xl p-6 mb-8">
+                      <h4 className="text-white font-bold mb-4 text-center">💰 Paliers de Commission</h4>
+                      <div className="grid md:grid-cols-4 gap-4">
+                        <div className="bg-gray-500/20 border border-gray-400 rounded-xl p-4 text-center">
+                          <div className="text-2xl mb-2">🥉</div>
+                          <div className="text-white font-bold">Bronze</div>
+                          <div className="text-cyan-400 text-2xl font-black my-2">5%</div>
+                          <div className="text-xs text-gray-400">0-1000€ / mois</div>
+                        </div>
+                        <div className="bg-gray-400/20 border border-gray-300 rounded-xl p-4 text-center">
+                          <div className="text-2xl mb-2">🥈</div>
+                          <div className="text-white font-bold">Argent</div>
+                          <div className="text-cyan-400 text-2xl font-black my-2">7%</div>
+                          <div className="text-xs text-gray-400">1000-5000€ / mois</div>
+                        </div>
+                        <div className="bg-yellow-500/20 border border-yellow-400 rounded-xl p-4 text-center">
+                          <div className="text-2xl mb-2">🥇</div>
+                          <div className="text-white font-bold">Or</div>
+                          <div className="text-cyan-400 text-2xl font-black my-2">10%</div>
+                          <div className="text-xs text-gray-400">5000-10000€ / mois</div>
+                        </div>
+                        <div className="bg-purple-500/20 border border-purple-400 rounded-xl p-4 text-center">
+                          <div className="text-2xl mb-2">💎</div>
+                          <div className="text-white font-bold">Platine</div>
+                          <div className="text-cyan-400 text-2xl font-black my-2">12%</div>
+                          <div className="text-xs text-gray-400">10000€+ / mois</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6 mb-8">
+                      <div className="space-y-3 text-left">
+                        <h4 className="text-white font-bold mb-3">🎯 Comment ça marche</h4>
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-cyan-500/30 flex items-center justify-center shrink-0">
+                            <span className="text-sm font-bold text-cyan-300">1</span>
+                          </div>
+                          <div>
+                            <p className="text-white font-semibold">Obtenez votre lien unique</p>
+                            <p className="text-sm text-gray-400 font-mono">visual.com/ref/VOTRECODE</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-cyan-500/30 flex items-center justify-center shrink-0">
+                            <span className="text-sm font-bold text-cyan-300">2</span>
+                          </div>
+                          <div>
+                            <p className="text-white font-semibold">Partagez sur vos réseaux</p>
+                            <p className="text-sm text-gray-400">Blog, réseaux sociaux, email, YouTube</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-cyan-500/30 flex items-center justify-center shrink-0">
+                            <span className="text-sm font-bold text-cyan-300">3</span>
+                          </div>
+                          <div>
+                            <p className="text-white font-semibold">Gagnez des commissions</p>
+                            <p className="text-sm text-gray-400">5-12% sur chaque investissement généré</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-cyan-500/30 flex items-center justify-center shrink-0">
+                            <span className="text-sm font-bold text-cyan-300">4</span>
+                          </div>
+                          <div>
+                            <p className="text-white font-semibold">Retirez vos gains</p>
+                            <p className="text-sm text-gray-400">Paiement mensuel (min 50€)</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="space-y-3 text-left">
+                        <h4 className="text-white font-bold mb-3">🎁 Outils Fournis</h4>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Kit marketing complet</p>
+                            <p className="text-sm text-gray-400">Bannières, visuels, vidéos</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Templates prêts à l'emploi</p>
+                            <p className="text-sm text-gray-400">Posts, emails, scripts</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Statistiques temps réel</p>
+                            <p className="text-sm text-gray-400">Clics, conversions, gains</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-white font-semibold">Formation & support</p>
+                            <p className="text-sm text-gray-400">Guides, webinaires, communauté</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button className="bg-gradient-to-r from-cyan-600 to-cyan-800 hover:from-cyan-500 hover:to-cyan-700 text-white rounded-full px-12 py-6 h-auto text-lg font-bold shadow-lg shadow-cyan-900/50 hover:scale-105 transition-all">
+                      Devenir Infoporteur
+                      <ChevronRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </div>
+                )}
+
+                {activeRole === "viewer-investor" && (
+                  <div className="animate-fadeIn">
+                    <div className="flex items-center justify-center mb-4">
+                      <Badge className="bg-gradient-to-r from-blue-500 to-green-500 text-white border-0">
+                        VIP • Tous les Avantages
+                      </Badge>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-black text-white mb-4">Le Meilleur des Deux Mondes</h3>
+                    <p className="text-gray-300 mb-6 text-base leading-relaxed">
+                      Profitez de TOUTES les fonctionnalités: regardez gratuitement, investissez, gagnez des revenus ET
+                      recevez des bonus exclusifs réservés aux membres VIP.
+                    </p>
+
+                    <div className="grid md:grid-cols-3 gap-6 mb-8">
+                      <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6">
+                        <div className="text-center mb-4">
+                          <Eye className="w-10 h-10 text-blue-400 mx-auto mb-2" />
+                          <h4 className="font-bold text-white">Visiteur</h4>
+                        </div>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
+                            <span className="text-gray-300">Accès illimité</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
+                            <span className="text-gray-300">Favoris & commentaires</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
+                            <span className="text-gray-300">VISUpoints</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-6">
+                        <div className="text-center mb-4">
+                          <Wallet className="w-10 h-10 text-green-400 mx-auto mb-2" />
+                          <h4 className="font-bold text-white">Investisseur</h4>
+                        </div>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
+                            <span className="text-gray-300">Investissements dès 10€</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
+                            <span className="text-gray-300">Parts de revenus</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <CheckCircle className="w-4 h-4 text-green-400 shrink-0" />
+                            <span className="text-gray-300">Tableau de bord</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="bg-gradient-to-br from-amber-500/20 to-amber-900/20 border-2 border-amber-400 rounded-xl p-6 relative overflow-hidden">
+                        <div className="absolute top-2 right-2">
+                          <span className="text-xs font-black uppercase bg-amber-400 text-black px-2 py-1 rounded">
+                            VIP
+                          </span>
+                        </div>
+                        <div className="text-center mb-4">
+                          <Masks className="w-10 h-10 text-amber-400 mx-auto mb-2" />
+                          <h4 className="font-bold text-white">Investi-lecteur</h4>
+                        </div>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-center gap-2">
+                            <Star className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span className="text-amber-300 font-semibold">+20% VISUpoints bonus</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Star className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span className="text-amber-300 font-semibold">Accès anticipé 48h</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Star className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span className="text-amber-300 font-semibold">Badge VIP exclusif</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Star className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span className="text-amber-300 font-semibold">Avant-premières privées</span>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Star className="w-4 h-4 text-amber-400 shrink-0" />
+                            <span className="text-amber-300 font-semibold">Contenu bonus exclusif</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-green-500/10 border border-amber-400/30 rounded-2xl p-6 mb-8">
+                      <h4 className="text-white font-bold mb-3 text-center">🌟 Statut VIP Automatique</h4>
+                      <p className="text-center text-gray-300 text-sm">
+                        Vous devenez automatiquement <strong className="text-amber-400">Investi-lecteur VIP</strong> dès
+                        votre premier investissement. Profitez immédiatement de tous les bonus exclusifs sans frais
+                        supplémentaires!
+                      </p>
+                    </div>
+
+                    <Button className="bg-gradient-to-r from-amber-600 via-purple-600 to-green-600 hover:brightness-110 text-white rounded-full px-12 py-6 h-auto text-lg font-bold shadow-lg shadow-amber-900/50 hover:scale-105 transition-all border-2 border-white/20">
+                      Devenir Investi-lecteur VIP
                       <ChevronRight className="ml-2 w-5 h-5" />
                     </Button>
                   </div>
@@ -201,15 +697,19 @@ export default function Home() {
 
           {/* Primary CTAs */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Button className="bg-gradient-to-r from-purple-600 via-violet-600 to-fuchsia-600 hover:from-purple-500 hover:via-violet-500 hover:to-fuchsia-500 text-white rounded-full px-14 py-8 h-auto text-xl font-black shadow-2xl shadow-purple-900/60 hover:scale-110 transition-all border-2 border-white/20">
-              <PlayCircle className="mr-3 w-7 h-7" /> Découvrir les Projets
-            </Button>
-            <Button
-              variant="outline"
-              className="bg-white/10 hover:bg-white/20 text-white rounded-full px-14 py-8 h-auto text-xl font-black border-2 border-white/30 hover:border-white/50 shadow-xl hover:scale-110 transition-all"
-            >
-              Commencer Maintenant
-            </Button>
+            <Link href="/explore">
+              <Button className="bg-gradient-to-r from-purple-600 via-violet-600 to-fuchsia-600 hover:from-purple-500 hover:via-violet-500 hover:to-fuchsia-500 text-white rounded-full px-14 py-8 h-auto text-xl font-black shadow-2xl shadow-purple-900/60 hover:scale-110 transition-all border-2 border-white/20">
+                <PlayCircle className="mr-3 w-7 h-7" /> Découvrir les Projets
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button
+                variant="outline"
+                className="bg-white/10 hover:bg-white/20 text-white rounded-full px-14 py-8 h-auto text-xl font-black border-2 border-white/30 hover:border-white/50 shadow-xl hover:scale-110 transition-all"
+              >
+                Commencer Maintenant
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -518,6 +1018,12 @@ export default function Home() {
               <p className="text-gray-400 mb-6 leading-relaxed">
                 Accès gratuit à tous les projets. Explorez, suivez et commentez sans engagement financier.
               </p>
+              <div className="mb-6 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
+                <p className="text-sm text-blue-300 leading-relaxed">
+                  <span className="font-semibold">✨ Découvrez librement</span> des centaines de projets créatifs sans
+                  dépenser un centime. Suivez vos favoris et participez aux discussions !
+                </p>
+              </div>
               <Button
                 variant="ghost"
                 className="text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 p-0 h-auto font-semibold group-hover:translate-x-2 transition-transform"
@@ -535,6 +1041,12 @@ export default function Home() {
               <p className="text-gray-400 mb-6 leading-relaxed">
                 Présentez votre création et obtenez le financement participatif nécessaire pour la réaliser.
               </p>
+              <div className="mb-6 p-4 bg-purple-500/10 rounded-xl border border-purple-500/20">
+                <p className="text-sm text-purple-300 leading-relaxed">
+                  <span className="font-semibold">🎬 Donnez vie à vos idées</span> en collectant des fonds auprès d'une
+                  communauté engagée. Gardez 65% des revenus générés !
+                </p>
+              </div>
               <Button
                 variant="ghost"
                 className="text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 p-0 h-auto font-semibold group-hover:translate-x-2 transition-transform"
@@ -552,6 +1064,12 @@ export default function Home() {
               <p className="text-gray-400 mb-6 leading-relaxed">
                 Investissez dès 10€ dans des projets prometteurs et recevez des royalties proportionnelles.
               </p>
+              <div className="mb-6 p-4 bg-green-500/10 rounded-xl border border-green-500/20">
+                <p className="text-sm text-green-300 leading-relaxed">
+                  <span className="font-semibold">💰 Revenus passifs garantis</span> ! Investissez petit, gagnez grand.
+                  30% des revenus redistribués à vie sur les projets soutenus.
+                </p>
+              </div>
               <Button
                 variant="ghost"
                 className="text-green-400 hover:text-green-300 hover:bg-green-500/10 p-0 h-auto font-semibold group-hover:translate-x-2 transition-transform"
@@ -569,6 +1087,12 @@ export default function Home() {
               <p className="text-gray-400 mb-6 leading-relaxed">
                 Partagez les projets avec votre réseau et gagnez des commissions sur les investissements générés.
               </p>
+              <div className="mb-6 p-4 bg-cyan-500/10 rounded-xl border border-cyan-500/20">
+                <p className="text-sm text-cyan-300 leading-relaxed">
+                  <span className="font-semibold">📢 Gagnez en partageant</span> ! 5% de commission sur chaque
+                  investissement que vous générez. Votre influence vaut de l'or !
+                </p>
+              </div>
               <Button
                 variant="ghost"
                 className="text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/10 p-0 h-auto font-semibold group-hover:translate-x-2 transition-transform"
@@ -586,6 +1110,12 @@ export default function Home() {
               <p className="text-gray-400 mb-6 leading-relaxed">
                 Profitez du meilleur des deux mondes : regardez et investissez dans vos projets préférés.
               </p>
+              <div className="mb-6 p-4 bg-amber-500/10 rounded-xl border border-amber-500/20">
+                <p className="text-sm text-amber-300 leading-relaxed">
+                  <span className="font-semibold">⭐ Le meilleur des 2 mondes</span> ! Visionnez gratuitement ET
+                  investissez pour maximiser vos gains. Double récompense !
+                </p>
+              </div>
               <Button
                 variant="ghost"
                 className="text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 p-0 h-auto font-semibold group-hover:translate-x-2 transition-transform"
@@ -603,6 +1133,12 @@ export default function Home() {
               <p className="text-gray-400 mb-6 leading-relaxed">
                 Comparez les avantages de chaque rôle et trouvez celui qui correspond le mieux à vos objectifs.
               </p>
+              <div className="mb-6 p-4 bg-pink-500/10 rounded-xl border border-pink-500/20">
+                <p className="text-sm text-pink-300 leading-relaxed">
+                  <span className="font-semibold">🔥 Trouvez votre place</span> ! Tableau complet avec coûts, gains
+                  potentiels et avantages de chaque rôle. Choisissez le vôtre !
+                </p>
+              </div>
               <Button
                 variant="ghost"
                 className="text-pink-400 hover:text-pink-300 hover:bg-pink-500/10 p-0 h-auto font-semibold group-hover:translate-x-2 transition-transform"
