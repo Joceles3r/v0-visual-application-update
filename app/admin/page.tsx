@@ -1,5 +1,8 @@
-import { getSupabaseServerClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
+"use client"
+
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { UsersManagement } from "@/components/admin/users-management"
@@ -7,36 +10,67 @@ import { VideosManagement } from "@/components/admin/videos-management"
 import { CommentsManagement } from "@/components/admin/comments-management"
 import { StatsOverview } from "@/components/admin/stats-overview"
 import { TrafficLight } from "@/components/traffic-light"
+import { Loader2 } from "lucide-react"
 
-export default async function AdminDashboard() {
-  const supabase = await getSupabaseServerClient()
+export default function AdminDashboard() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(true)
+  const [userData, setUserData] = useState<any>(null)
+  const [stats, setStats] = useState({
+    users: 0,
+    videos: 0,
+    comments: 0,
+    totalVisupoints: 0,
+  })
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  useEffect(() => {
+    async function loadAdminData() {
+      const supabase = getSupabaseBrowserClient()
 
-  if (!user) {
-    redirect("/login?redirect=/admin")
-  }
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
 
-  const { data: userData } = await supabase.from("users").select("role, full_name, email").eq("id", user.id).single()
+      if (!user) {
+        router.push("/login?redirect=/admin")
+        return
+      }
 
-  if (!userData || userData.role !== "admin") {
-    redirect("/")
-  }
+      const { data: profile } = await supabase.from("users").select("role, full_name, email").eq("id", user.id).single()
 
-  const [usersCount, videosCount, commentsCount, totalVisupoints] = await Promise.all([
-    supabase.from("users").select("*", { count: "exact", head: true }),
-    supabase.from("videos").select("*", { count: "exact", head: true }),
-    supabase.from("comments").select("*", { count: "exact", head: true }),
-    supabase.from("users").select("visupoints"),
-  ])
+      if (!profile || profile.role !== "admin") {
+        router.push("/")
+        return
+      }
 
-  const stats = {
-    users: usersCount.count || 0,
-    videos: videosCount.count || 0,
-    comments: commentsCount.count || 0,
-    totalVisupoints: totalVisupoints.data?.reduce((sum, u) => sum + (u.visupoints || 0), 0) || 0,
+      setUserData(profile)
+
+      const [usersCount, videosCount, commentsCount, totalVisupoints] = await Promise.all([
+        supabase.from("users").select("*", { count: "exact", head: true }),
+        supabase.from("videos").select("*", { count: "exact", head: true }),
+        supabase.from("comments").select("*", { count: "exact", head: true }),
+        supabase.from("users").select("visupoints"),
+      ])
+
+      setStats({
+        users: usersCount.count || 0,
+        videos: videosCount.count || 0,
+        comments: commentsCount.count || 0,
+        totalVisupoints: totalVisupoints.data?.reduce((sum, u) => sum + (u.visupoints || 0), 0) || 0,
+      })
+
+      setLoading(false)
+    }
+
+    loadAdminData()
+  }, [router])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-purple-950 via-purple-900 to-black flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-purple-400" />
+      </div>
+    )
   }
 
   return (
@@ -50,7 +84,7 @@ export default async function AdminDashboard() {
             Dashboard{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">ADMIN</span>
           </h1>
-          <p className="text-purple-200">Bienvenue {userData.full_name || userData.email}</p>
+          <p className="text-purple-200">Bienvenue {userData?.full_name || userData?.email}</p>
         </div>
 
         <StatsOverview stats={stats} />

@@ -1,40 +1,53 @@
-import { Navigation } from '@/components/navigation'
-import { getSupabaseServerClient } from '@/lib/supabase/server'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { VisupointsDisplay } from '@/components/visupoints-display'
-import { Trophy, Medal, Award, Eye, VideoIcon } from 'lucide-react'
-import Link from 'next/link'
+"use client"
 
-export default async function LeaderboardPage() {
-  const supabase = await getSupabaseServerClient()
-  
-  // Get top users by visupoints
-  const { data: topUsers } = await supabase
-    .from('users')
-    .select(`
-      *,
-      user_badges:user_badges(count)
-    `)
-    .order('visupoints', { ascending: false })
-    .limit(50)
+import { Navigation } from "@/components/navigation"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { VisupointsDisplay } from "@/components/visupoints-display"
+import { Trophy, Medal, Eye, VideoIcon, Award } from "lucide-react"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 
-  // Get video count for each user
-  const usersWithStats = await Promise.all(
-    (topUsers || []).map(async (user, index) => {
-      const { count: videoCount } = await supabase
-        .from('videos')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
+export default function LeaderboardPage() {
+  const [usersWithStats, setUsersWithStats] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
 
-      return {
-        ...user,
-        rank: index + 1,
-        videoCount: videoCount || 0,
-        badgeCount: user.user_badges[0]?.count || 0,
+  useEffect(() => {
+    async function loadLeaderboard() {
+      const supabase = getSupabaseBrowserClient()
+
+      const { data: topUsers } = await supabase
+        .from("users")
+        .select(`
+          *,
+          user_badges:user_badges(count)
+        `)
+        .order("visupoints", { ascending: false })
+        .limit(50)
+
+      if (topUsers) {
+        const usersWithVideoCounts = await Promise.all(
+          topUsers.map(async (user, index) => {
+            const { count: videoCount } = await supabase
+              .from("videos")
+              .select("*", { count: "exact", head: true })
+              .eq("user_id", user.id)
+
+            return {
+              ...user,
+              rank: index + 1,
+              videoCount: videoCount || 0,
+              badgeCount: user.user_badges[0]?.count || 0,
+            }
+          }),
+        )
+        setUsersWithStats(usersWithVideoCounts)
       }
-    })
-  )
+      setLoading(false)
+    }
+
+    loadLeaderboard()
+  }, [])
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -52,20 +65,39 @@ export default async function LeaderboardPage() {
   const getRankBadgeColor = (rank: number) => {
     switch (rank) {
       case 1:
-        return 'bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border-yellow-500/50'
+        return "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border-yellow-500/50"
       case 2:
-        return 'bg-gradient-to-r from-gray-400/20 to-gray-500/20 border-gray-400/50'
+        return "bg-gradient-to-r from-gray-400/20 to-gray-500/20 border-gray-400/50"
       case 3:
-        return 'bg-gradient-to-r from-amber-600/20 to-amber-700/20 border-amber-600/50'
+        return "bg-gradient-to-r from-amber-600/20 to-amber-700/20 border-amber-600/50"
       default:
-        return 'bg-card border-border'
+        return "bg-card border-border"
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="container mx-auto px-4 pt-24 pb-12">
+          <div className="max-w-4xl mx-auto">
+            <div className="animate-pulse space-y-4">
+              <div className="h-10 bg-muted rounded w-1/3" />
+              <div className="h-6 bg-muted rounded w-2/3" />
+              {[...Array(10)].map((_, i) => (
+                <div key={i} className="h-20 bg-muted rounded" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
@@ -73,9 +105,7 @@ export default async function LeaderboardPage() {
               <Trophy className="w-10 h-10 text-primary" />
               Leaderboard
             </h1>
-            <p className="text-muted-foreground">
-              Top creators ranked by visupoints and achievements
-            </p>
+            <p className="text-muted-foreground">Top creators ranked by visupoints and achievements</p>
           </div>
 
           {/* Top 3 Podium */}
@@ -93,7 +123,10 @@ export default async function LeaderboardPage() {
                     2
                   </div>
                 </div>
-                <Link href={`/profile/${usersWithStats[1].id}`} className="text-center hover:text-primary transition-colors">
+                <Link
+                  href={`/profile/${usersWithStats[1].id}`}
+                  className="text-center hover:text-primary transition-colors"
+                >
                   <p className="font-semibold">{usersWithStats[1].full_name}</p>
                 </Link>
                 <VisupointsDisplay points={usersWithStats[1].visupoints} size="sm" showLabel={false} />
@@ -112,7 +145,10 @@ export default async function LeaderboardPage() {
                   </div>
                   <Trophy className="absolute -top-8 left-1/2 -translate-x-1/2 w-10 h-10 text-yellow-500" />
                 </div>
-                <Link href={`/profile/${usersWithStats[0].id}`} className="text-center hover:text-primary transition-colors">
+                <Link
+                  href={`/profile/${usersWithStats[0].id}`}
+                  className="text-center hover:text-primary transition-colors"
+                >
                   <p className="font-bold text-lg">{usersWithStats[0].full_name}</p>
                 </Link>
                 <VisupointsDisplay points={usersWithStats[0].visupoints} size="md" showLabel={false} />
@@ -130,7 +166,10 @@ export default async function LeaderboardPage() {
                     3
                   </div>
                 </div>
-                <Link href={`/profile/${usersWithStats[2].id}`} className="text-center hover:text-primary transition-colors">
+                <Link
+                  href={`/profile/${usersWithStats[2].id}`}
+                  className="text-center hover:text-primary transition-colors"
+                >
                   <p className="font-semibold">{usersWithStats[2].full_name}</p>
                 </Link>
                 <VisupointsDisplay points={usersWithStats[2].visupoints} size="sm" showLabel={false} />
@@ -142,11 +181,11 @@ export default async function LeaderboardPage() {
           <div className="space-y-3">
             {usersWithStats.map((user) => (
               <Link key={user.id} href={`/profile/${user.id}`}>
-                <div className={`flex items-center gap-4 p-4 rounded-lg border transition-all hover:scale-[1.02] ${getRankBadgeColor(user.rank)}`}>
+                <div
+                  className={`flex items-center gap-4 p-4 rounded-lg border transition-all hover:scale-[1.02] ${getRankBadgeColor(user.rank)}`}
+                >
                   {/* Rank */}
-                  <div className="w-12 flex items-center justify-center">
-                    {getRankIcon(user.rank)}
-                  </div>
+                  <div className="w-12 flex items-center justify-center">{getRankIcon(user.rank)}</div>
 
                   {/* Avatar */}
                   <Avatar className="w-12 h-12">

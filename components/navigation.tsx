@@ -1,22 +1,58 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { getSupabaseServerClient } from '@/lib/supabase/server'
-import { Video, Trophy, Upload, User, LogOut } from 'lucide-react'
-import { SignOutButton } from './signout-button'
+"use client"
 
-export async function Navigation() {
-  const supabase = await getSupabaseServerClient()
-  const { data: { user } } = await supabase.auth.getUser()
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Video, Trophy, Upload, User } from "lucide-react"
+import { SignOutButton } from "./signout-button"
+import { useEffect, useState } from "react"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
-  let profile = null
-  if (user) {
-    const { data } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-    profile = data
-  }
+export function Navigation() {
+  const [user, setUser] = useState<any>(null)
+  const [profile, setProfile] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient()
+
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      if (session?.user) {
+        // Fetch profile
+        supabase
+          .from("users")
+          .select("*")
+          .eq("id", session.user.id)
+          .single()
+          .then(({ data }) => {
+            setProfile(data)
+            setLoading(false)
+          })
+      } else {
+        setLoading(false)
+      }
+    })
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+      if (session?.user) {
+        supabase
+          .from("users")
+          .select("*")
+          .eq("id", session.user.id)
+          .single()
+          .then(({ data }) => setProfile(data))
+      } else {
+        setProfile(null)
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
@@ -35,12 +71,18 @@ export async function Navigation() {
           <Link href="/explore" className="text-muted-foreground hover:text-foreground transition-colors">
             Explore
           </Link>
-          <Link href="/leaderboard" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+          <Link
+            href="/leaderboard"
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
             <Trophy className="w-4 h-4" />
             Leaderboard
           </Link>
           {user && (
-            <Link href="/upload" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+            <Link
+              href="/upload"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            >
               <Upload className="w-4 h-4" />
               Upload
             </Link>
@@ -48,10 +90,15 @@ export async function Navigation() {
         </div>
 
         <div className="flex items-center gap-3">
-          {user ? (
+          {loading ? (
+            <div className="w-20 h-9 bg-muted animate-pulse rounded" />
+          ) : user ? (
             <>
               {profile && (
-                <Link href="/dashboard" className="hidden md:flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Link
+                  href="/dashboard"
+                  className="hidden md:flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
                   <span className="font-semibold">{profile.visupoints}</span>
                   <span>VP</span>
                 </Link>
@@ -69,9 +116,7 @@ export async function Navigation() {
                 <Button variant="ghost">Log in</Button>
               </Link>
               <Link href="/signup">
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                  Sign up
-                </Button>
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">Sign up</Button>
               </Link>
             </>
           )}

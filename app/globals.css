@@ -78,7 +78,6 @@
   --font-sans: "Geist", "Geist Fallback";
   --font-mono: "Geist Mono", "Geist Mono Fallback";
 
-  /* VISUAL Color System - Official Colors */
   --color-visual-purple: #9333ea;
   --color-visual-purple-light: #a855f7;
   --color-visual-purple-dark: #7c3aed;
@@ -99,26 +98,6 @@
   --color-silver: #9ca3af;
   --color-bronze: #fb923c;
 
-  /* Semantic Design Tokens */
-  --color-background: #0a0a0a;
-  --color-foreground: #fafafa;
-  --color-card: #1a1a1a;
-  --color-card-foreground: #fafafa;
-  --color-primary: #9333ea;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #2563eb;
-  --color-secondary-foreground: #ffffff;
-  --color-muted: #262626;
-  --color-muted-foreground: #a3a3a3;
-  --color-accent: #a855f7;
-  --color-accent-foreground: #ffffff;
-  --color-border: #27272a;
-  --color-input: #27272a;
-  --color-ring: #9333ea;
-
-  --radius: 0.5rem;
-
-  /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -184,7 +163,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Metallic Frame Effect */
 .metallic-frame {
   background: linear-gradient(145deg, #e2e2e2 0%, #9ca3af 20%, #4b5563 50%, #9ca3af 80%, #e2e2e2 100%);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.8), inset 0 -2px 5px
@@ -200,7 +178,6 @@ body {
   overflow: hidden;
 }
 
-/* Glassmorphism Card */
 .glass-card {
   background: rgba(76, 29, 149, 0.3);
   backdrop-filter: blur(10px);
@@ -208,7 +185,6 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
-/* Neon Text */
 .neon-title {
   color: #4ade80;
   text-shadow: 0 0 10px rgba(74, 222, 128, 0.5), 0 0 20px rgba(74, 222, 128, 0.3), 0 0 30px rgba(74, 222, 128, 0.1);
@@ -217,7 +193,6 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Custom Button Gradient */
 .btn-gradient {
   background: linear-gradient(to right, #8b5cf6, #6d28d9);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -230,7 +205,6 @@ body {
   box-shadow: 0 6px 20px rgba(109, 40, 217, 0.5);
 }
 
-/* Floating Particles */
 .particle {
   position: absolute;
   background: white;
@@ -253,7 +227,6 @@ body {
   }
 }
 
-/* Traffic Light Animation */
 @keyframes pulse-red {
   0%,
   100% {
@@ -302,7 +275,6 @@ body {
   animation: pulse-green 2s ease-in-out infinite 1.4s;
 }
 
-/* Added ping animation and delay utilities for staggered traffic light effects */
 @keyframes ping {
   75%,
   100% {
@@ -323,7 +295,6 @@ body {
   animation-delay: 2000ms;
 }
 
-/* Added slow spin animation for play button */
 @keyframes spin-slow {
   from {
     transform: rotate(0deg);
@@ -337,8 +308,6 @@ body {
   animation: spin-slow 8s linear infinite;
 }
 
-/* Added animated gradient for VISUAL title cycling through traffic light colors */
-/* Updated tricolor animation to sync with traffic lights and add smooth gradient transitions */
 @keyframes tricolor-sync {
   0% {
     background-position: 0% 50%;
@@ -389,10 +358,8 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: none;
 }
 
-/* Added fadeIn animation for role tab transitions */
 @keyframes fadeIn {
   from {
     opacity: 0;

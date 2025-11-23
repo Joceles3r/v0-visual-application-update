@@ -1,46 +1,95 @@
-import { notFound } from 'next/navigation'
-import { Navigation } from '@/components/navigation'
-import { getSupabaseServerClient } from '@/lib/supabase/server'
-import { VideoGrid } from '@/components/video-grid'
-import { VisupointsDisplay } from '@/components/visupoints-display'
-import { BadgeDisplay } from '@/components/badge-display'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Eye, VideoIcon, Award, Calendar } from 'lucide-react'
+"use client"
 
-export default async function ProfilePage({ params }: { params: { id: string } }) {
-  const supabase = await getSupabaseServerClient()
-  
-  const { data: profile } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', params.id)
-    .single()
+import { Navigation } from "@/components/navigation"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { VideoGrid } from "@/components/video-grid"
+import { VisupointsDisplay } from "@/components/visupoints-display"
+import { BadgeDisplay } from "@/components/badge-display"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Eye, VideoIcon, Award, Calendar } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
 
-  if (!profile) {
-    notFound()
-  }
+export default function ProfilePage() {
+  const params = useParams()
+  const [profile, setProfile] = useState<any>(null)
+  const [videos, setVideos] = useState<any[]>([])
+  const [userBadges, setUserBadges] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [notFound, setNotFound] = useState(false)
 
-  const { data: videos } = await supabase
-    .from('videos')
-    .select('*')
-    .eq('user_id', params.id)
-    .eq('status', 'published')
-    .order('created_at', { ascending: false })
+  useEffect(() => {
+    async function loadProfile() {
+      const supabase = getSupabaseBrowserClient()
 
-  const { data: userBadges } = await supabase
-    .from('user_badges')
-    .select(`
-      *,
-      badge:badges(*)
-    `)
-    .eq('user_id', params.id)
+      const { data: profileData, error } = await supabase.from("users").select("*").eq("id", params.id).single()
+
+      if (error || !profileData) {
+        setNotFound(true)
+        setLoading(false)
+        return
+      }
+
+      setProfile(profileData)
+
+      const { data: videosData } = await supabase
+        .from("videos")
+        .select("*")
+        .eq("user_id", params.id)
+        .eq("status", "published")
+        .order("created_at", { ascending: false })
+
+      setVideos(videosData || [])
+
+      const { data: badgesData } = await supabase
+        .from("user_badges")
+        .select(`
+          *,
+          badge:badges(*)
+        `)
+        .eq("user_id", params.id)
+
+      setUserBadges(badgesData || [])
+      setLoading(false)
+    }
+
+    if (params.id) {
+      loadProfile()
+    }
+  }, [params.id])
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
     })
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="container mx-auto px-4 pt-24 pb-12">
+          <div className="max-w-6xl mx-auto animate-pulse">
+            <div className="h-48 bg-muted rounded-lg mb-8" />
+            <div className="h-64 bg-muted rounded-lg" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (notFound || !profile) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="container mx-auto px-4 pt-24 pb-12 text-center">
+          <h1 className="text-4xl font-bold mb-4">Profile Not Found</h1>
+          <p className="text-muted-foreground">The profile you're looking for doesn't exist.</p>
+        </div>
+      </div>
+    )
   }
 
   const totalVideos = videos?.length || 0
@@ -50,7 +99,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="max-w-6xl mx-auto">
           {/* Profile Header */}
@@ -68,7 +117,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                   <Calendar className="w-4 h-4" />
                   Joined {formatDate(profile.created_at)}
                 </p>
-                
+
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-6">
                   <VisupointsDisplay points={visupoints} size="lg" />
                   <div className="flex items-center gap-2 text-muted-foreground">
@@ -103,11 +152,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
               <CardContent>
                 <div className="flex flex-wrap gap-6">
                   {userBadges.map((userBadge) => (
-                    <BadgeDisplay
-                      key={userBadge.id}
-                      badge={userBadge.badge}
-                      showDetails
-                    />
+                    <BadgeDisplay key={userBadge.id} badge={userBadge.badge} showDetails />
                   ))}
                 </div>
               </CardContent>

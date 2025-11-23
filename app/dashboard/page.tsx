@@ -42,13 +42,14 @@ export default function DashboardPage() {
         .from("users")
         .select("*")
         .eq("id", currentUser.id)
-        .single()
 
       if (profileError) {
         console.error("[v0] Error loading profile:", profileError.message)
+      } else if (profileData && profileData.length > 0) {
+        console.log("[v0] Profile loaded:", profileData[0]?.full_name)
+        setProfile(profileData[0])
       } else {
-        console.log("[v0] Profile loaded:", profileData?.full_name)
-        setProfile(profileData)
+        console.log("[v0] No profile found for user")
       }
 
       const { data: videosData } = await supabase

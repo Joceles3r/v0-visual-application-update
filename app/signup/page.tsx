@@ -3,6 +3,7 @@
 import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,18 +12,17 @@ import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { Video } from "lucide-react"
 
 export default function SignupPage() {
+  const router = useRouter()
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError("")
-    setSuccess(false)
 
     try {
       const supabase = getSupabaseBrowserClient()
@@ -31,6 +31,7 @@ export default function SignupPage() {
         email,
         password,
         options: {
+          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/dashboard`,
           data: {
             full_name: fullName,
           },
@@ -43,31 +44,23 @@ export default function SignupPage() {
         return
       }
 
-      if (!authData.user) {
-        setError("Inscription échouée. Veuillez réessayer.")
+      // Si l'utilisateur est bien créé, le trigger a automatiquement créé le profil
+      if (authData.user) {
+        console.log("[v0] User created successfully:", authData.user.id)
+        console.log("[v0] Profile will be created automatically by database trigger")
+
+        // Redirect to login page
         setLoading(false)
+        router.push("/login")
         return
       }
 
-      const { data: sessionData } = await supabase.auth.getSession()
-
-      if (sessionData.session) {
-        // Session créée immédiatement = email confirmation désactivée
-        setSuccess(true)
-        setTimeout(() => {
-          window.location.href = "/dashboard"
-        }, 1500)
-      } else {
-        // Pas de session = email confirmation activée
-        setSuccess(true)
-        setError(
-          "Compte créé ! Veuillez vérifier votre email pour confirmer votre inscription avant de vous connecter.",
-        )
-      }
+      // Cas ultra rare : pas d'erreur mais pas de user
+      setError("Un problème est survenu lors de l'inscription. Réessaye.")
+      setLoading(false)
     } catch (err) {
       console.error("[v0] Signup error:", err)
       setError(err instanceof Error ? err.message : "Une erreur inattendue s'est produite")
-    } finally {
       setLoading(false)
     }
   }
@@ -89,14 +82,9 @@ export default function SignupPage() {
           </CardHeader>
           <form onSubmit={handleSignup}>
             <CardContent className="space-y-4">
-              {error && !success && (
+              {error && (
                 <div className="bg-destructive/10 border border-destructive/50 text-destructive px-4 py-3 rounded-lg text-sm">
                   {error}
-                </div>
-              )}
-              {success && (
-                <div className="bg-green-500/10 border border-green-500/50 text-green-600 px-4 py-3 rounded-lg text-sm">
-                  {error || "Compte créé avec succès ! Redirection vers le dashboard..."}
                 </div>
               )}
               <div className="space-y-2">
@@ -108,7 +96,7 @@ export default function SignupPage() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   required
-                  disabled={loading || success}
+                  disabled={loading}
                 />
               </div>
               <div className="space-y-2">
@@ -120,7 +108,7 @@ export default function SignupPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  disabled={loading || success}
+                  disabled={loading}
                 />
               </div>
               <div className="space-y-2">
@@ -133,7 +121,7 @@ export default function SignupPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
-                  disabled={loading || success}
+                  disabled={loading}
                 />
                 <p className="text-xs text-muted-foreground">Minimum 6 caractères</p>
               </div>
@@ -142,9 +130,9 @@ export default function SignupPage() {
               <Button
                 type="submit"
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                disabled={loading || success}
+                disabled={loading}
               >
-                {loading ? "Création du compte..." : success ? "Compte créé !" : "S'inscrire"}
+                {loading ? "Création du compte..." : "S'inscrire"}
               </Button>
               <p className="text-sm text-center text-muted-foreground">
                 Vous avez déjà un compte ?{" "}

@@ -1,39 +1,63 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { getSupabaseBrowserClient } from '@/lib/supabase/client'
-import { Video } from 'lucide-react'
+import type React from "react"
+
+import { useState } from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { Video } from "lucide-react"
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState("")
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
+    setError("")
+
+    console.log("[v0] Login attempt for email:", email)
 
     const supabase = getSupabaseBrowserClient()
-    const { error } = await supabase.auth.signInWithPassword({
+
+    const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
-    if (error) {
-      setError(error.message)
+    console.log("[v0] SignIn response:", {
+      user: authData?.user?.id,
+      session: authData?.session ? "exists" : "null",
+      error: signInError,
+    })
+
+    if (signInError) {
+      console.error("[v0] Login error:", signInError)
+
+      if (signInError.message.includes("Invalid login credentials")) {
+        setError(
+          "Email ou mot de passe incorrect. Si vous venez de vous inscrire, vérifiez votre email pour confirmer votre compte.",
+        )
+      } else if (signInError.message.includes("Email not confirmed")) {
+        setError("Veuillez confirmer votre email avant de vous connecter. Vérifiez votre boîte de réception.")
+      } else {
+        setError(signInError.message)
+      }
       setLoading(false)
     } else {
-      router.push('/dashboard')
-      router.refresh()
+      console.log("[v0] Login successful! Session:", authData.session?.access_token?.substring(0, 20) + "...")
+
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      window.location.href = "/dashboard"
     }
   }
 
@@ -50,9 +74,7 @@ export default function LoginPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl">Welcome back</CardTitle>
-            <CardDescription>
-              Sign in to your account to continue creating
-            </CardDescription>
+            <CardDescription>Sign in to your account to continue creating</CardDescription>
           </CardHeader>
           <form onSubmit={handleLogin}>
             <CardContent className="space-y-4">
@@ -90,10 +112,10 @@ export default function LoginPage() {
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 disabled={loading}
               >
-                {loading ? 'Signing in...' : 'Sign in'}
+                {loading ? "Signing in..." : "Sign in"}
               </Button>
               <p className="text-sm text-center text-muted-foreground">
-                Don't have an account?{' '}
+                Don't have an account?{" "}
                 <Link href="/signup" className="text-primary hover:underline">
                   Sign up
                 </Link>
