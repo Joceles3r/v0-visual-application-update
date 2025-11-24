@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
@@ -38,35 +40,17 @@ import {
   Award,
   Settings,
   Shield,
-  LogOut,
   Database,
   FileText,
   Cog,
 } from "lucide-react"
 import { SignOutButton } from "./signout-button"
 import { LanguageSelector } from "./language-selector"
-import { getSupabaseServerClient } from "@/lib/supabase/server"
+import { useState } from "react"
 
-export async function Navigation() {
-  let user = null
-  let profile = null
-
-  try {
-    const supabase = await getSupabaseServerClient()
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser()
-    user = authUser
-
-    if (user) {
-      const { data: profileData } = await supabase.from("users").select("*").eq("id", user.id).single()
-      profile = profileData
-    }
-  } catch (error) {
-    console.log("[v0] Auth check failed, running in offline mode")
-  }
-
-  const isAdmin = profile?.role === "admin"
+export function Navigation() {
+  const [user, setUser] = useState<any>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-lg border-b border-purple-500/20">
@@ -368,31 +352,46 @@ export async function Navigation() {
               <DropdownMenuItem asChild>
                 <Link href="/support/mailbox" className="flex items-center gap-3 cursor-pointer">
                   <Mail className="w-4 h-4 text-blue-400" />
-                  <div className="font-medium">Boîte aux lettres interne</div>
+                  <div>
+                    <div className="font-medium">Boîte aux lettres interne</div>
+                    <div className="text-xs text-gray-400">Communication avec l'équipe</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/support" className="flex items-center gap-3 cursor-pointer">
                   <LifeBuoy className="w-4 h-4 text-purple-400" />
-                  <div className="font-medium">Centre d'aide</div>
+                  <div>
+                    <div className="font-medium">Centre d'aide</div>
+                    <div className="text-xs text-gray-400">Trouvez les réponses aux questions</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/guides" className="flex items-center gap-3 cursor-pointer">
                   <BookOpen className="w-4 h-4 text-green-400" />
-                  <div className="font-medium">Guides & tutoriels</div>
+                  <div>
+                    <div className="font-medium">Guides & tutoriels</div>
+                    <div className="text-xs text-gray-400">Apprenez à utiliser VISUAL</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/support/report" className="flex items-center gap-3 cursor-pointer">
                   <AlertCircle className="w-4 h-4 text-red-400" />
-                  <div className="font-medium">Signaler un problème</div>
+                  <div>
+                    <div className="font-medium">Signaler un problème</div>
+                    <div className="text-xs text-gray-400">Aidez à améliorer VISUAL</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/status" className="flex items-center gap-3 cursor-pointer">
                   <Activity className="w-4 h-4 text-yellow-400" />
-                  <div className="font-medium">Statut de la plateforme</div>
+                  <div>
+                    <div className="font-medium">Statut de la plateforme</div>
+                    <div className="text-xs text-gray-400">Vérifiez l'état actuel de VISUAL</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -434,22 +433,19 @@ export async function Navigation() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/settings/security" className="flex items-center gap-3 cursor-pointer">
-                    <Shield className="w-4 h-4 text-green-400" />
-                    <div className="font-medium">Sécurité & confidentialité</div>
+                  <Link href="/settings/privacy" className="flex items-center gap-3 cursor-pointer">
+                    <Shield className="w-4 h-4 text-blue-400" />
+                    <div className="font-medium">Confidentialité</div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <div className="flex items-center gap-3 cursor-pointer w-full">
-                    <LogOut className="w-4 h-4 text-red-400" />
-                    <SignOutButton />
-                  </div>
+                <DropdownMenuItem className="text-red-400">
+                  <SignOutButton />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <>
+            <div className="flex items-center gap-2">
               <Link href="/login">
                 <Button variant="ghost" size="sm">
                   Se connecter
@@ -458,65 +454,52 @@ export async function Navigation() {
               <Link href="/signup">
                 <Button
                   size="sm"
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                 >
                   S'inscrire
                 </Button>
               </Link>
-            </>
+            </div>
           )}
 
-          {/* Menu 8: Administration (admin only) */}
+          {/* Menu 8: Admin (si admin) */}
           {isAdmin && (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-1 border border-red-500/30">
-                  <Shield className="w-4 h-4 text-red-400" />
-                  <span className="hidden lg:inline">Admin</span>
+                <Button variant="ghost" size="sm" className="gap-1 text-red-400">
+                  <Shield className="w-4 h-4" />
+                  <span className="hidden md:inline">Admin</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-80 bg-black/95 border-red-500/20 backdrop-blur">
                 <DropdownMenuItem asChild>
                   <Link href="/admin" className="flex items-center gap-3 cursor-pointer">
                     <LayoutDashboard className="w-4 h-4 text-red-400" />
-                    <div className="font-medium">Tableau de bord ADMIN</div>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/projects" className="flex items-center gap-3 cursor-pointer">
-                    <FolderOpen className="w-4 h-4 text-purple-400" />
-                    <div className="font-medium">Gestion des projets</div>
+                    <div className="font-medium">Dashboard Admin</div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/admin/users" className="flex items-center gap-3 cursor-pointer">
                     <Users className="w-4 h-4 text-blue-400" />
-                    <div className="font-medium">Gestion des utilisateurs</div>
+                    <div className="font-medium">Gestion utilisateurs</div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/admin/vsls" className="flex items-center gap-3 cursor-pointer">
-                    <Video className="w-4 h-4 text-pink-400" />
-                    <div className="font-medium">Visual Studio Live Show</div>
+                  <Link href="/admin/videos" className="flex items-center gap-3 cursor-pointer">
+                    <Video className="w-4 h-4 text-purple-400" />
+                    <div className="font-medium">Gestion vidéos</div>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/admin/db" className="flex items-center gap-3 cursor-pointer">
+                  <Link href="/admin/moderation" className="flex items-center gap-3 cursor-pointer">
+                    <AlertCircle className="w-4 h-4 text-yellow-400" />
+                    <div className="font-medium">Modération</div>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/database" className="flex items-center gap-3 cursor-pointer">
                     <Database className="w-4 h-4 text-green-400" />
-                    <div className="font-medium">Monitoring Supabase</div>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/payments" className="flex items-center gap-3 cursor-pointer">
-                    <CreditCard className="w-4 h-4 text-yellow-400" />
-                    <div className="font-medium">Monitoring Stripe</div>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/admin/logs" className="flex items-center gap-3 cursor-pointer">
-                    <FileText className="w-4 h-4 text-gray-400" />
-                    <div className="font-medium">Journal & logs</div>
+                    <div className="font-medium">Base de données</div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -530,7 +513,6 @@ export async function Navigation() {
           )}
 
           {/* Language Selector */}
-          <div className="hidden sm:block w-px h-6 bg-border" />
           <LanguageSelector />
         </div>
       </div>
