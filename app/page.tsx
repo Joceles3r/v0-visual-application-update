@@ -23,6 +23,7 @@ import {
   Shield,
   Clock,
   DollarSign,
+  BookOpen,
 } from "lucide-react"
 import { VisualHeader } from "@/components/visual-header"
 import { FloatingParticles } from "@/components/floating-particles"
@@ -141,7 +142,7 @@ export default function Home() {
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
                   }`}
                 >
-                  <Masks className="w-5 h-5 mx-auto mb-2" />
+                  <BookOpen className="w-5 h-5 mx-auto mb-2" />
                   Investi-lecteur
                 </button>
               </div>

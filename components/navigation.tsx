@@ -193,7 +193,7 @@ export function Navigation() {
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/roles/investireader" className="flex items-center gap-3 cursor-pointer">
-                  <Target className="w-4 h-4 text-purple-400" />
+                  <BookOpen className="w-4 h-4 text-purple-400" />
                   <div>
                     <div className="font-medium">Investi-lecteur</div>
                     <div className="text-xs text-gray-400">Double rôle</div>
@@ -222,37 +222,49 @@ export function Navigation() {
               <DropdownMenuItem asChild>
                 <Link href="/explore" className="flex items-center gap-3 cursor-pointer">
                   <Target className="w-4 h-4 text-purple-400" />
-                  <div className="font-medium">Explorer les projets</div>
+                  <div>
+                    <div className="font-medium">Explorer les projets</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/projects/featured" className="flex items-center gap-3 cursor-pointer">
                   <Award className="w-4 h-4 text-yellow-400" />
-                  <div className="font-medium">Projets en vedette</div>
+                  <div>
+                    <div className="font-medium">Projets en vedette</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/leaderboard" className="flex items-center gap-3 cursor-pointer">
                   <Trophy className="w-4 h-4 text-yellow-400" />
-                  <div className="font-medium">Top 10 VISUAL</div>
+                  <div>
+                    <div className="font-medium">Top 10 VISUAL</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/vsls" className="flex items-center gap-3 cursor-pointer">
                   <Video className="w-4 h-4 text-pink-500" />
-                  <div className="font-medium">Visual Studio Live Show</div>
+                  <div>
+                    <div className="font-medium">Visual Studio Live Show</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/archives/projects" className="flex items-center gap-3 cursor-pointer">
                   <FileText className="w-4 h-4 text-gray-400" />
-                  <div className="font-medium">Archives des campagnes</div>
+                  <div>
+                    <div className="font-medium">Archives des campagnes</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/stats/public" className="flex items-center gap-3 cursor-pointer">
                   <BarChart className="w-4 h-4 text-blue-400" />
-                  <div className="font-medium">Statistiques publiques</div>
+                  <div>
+                    <div className="font-medium">Statistiques publiques</div>
+                  </div>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -271,25 +283,33 @@ export function Navigation() {
                 <DropdownMenuItem asChild>
                   <Link href="/upload" className="flex items-center gap-3 cursor-pointer">
                     <Upload className="w-4 h-4 text-green-400" />
-                    <div className="font-medium">Déposer un projet</div>
+                    <div>
+                      <div className="font-medium">Déposer un projet</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/creator/projects" className="flex items-center gap-3 cursor-pointer">
                     <FolderOpen className="w-4 h-4 text-purple-400" />
-                    <div className="font-medium">Mes projets</div>
+                    <div>
+                      <div className="font-medium">Mes projets</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/creator/studio" className="flex items-center gap-3 cursor-pointer">
                     <Briefcase className="w-4 h-4 text-blue-400" />
-                    <div className="font-medium">Studio VISUAL</div>
+                    <div>
+                      <div className="font-medium">Studio VISUAL</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/sandbox/creators" className="flex items-center gap-3 cursor-pointer">
                     <Lightbulb className="w-4 h-4 text-yellow-400" />
-                    <div className="font-medium">Sandbox tests porteurs</div>
+                    <div>
+                      <div className="font-medium">Sandbox tests porteurs</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -309,31 +329,41 @@ export function Navigation() {
                 <DropdownMenuItem asChild>
                   <Link href="/wallet" className="flex items-center gap-3 cursor-pointer">
                     <Wallet className="w-4 h-4 text-yellow-400" />
-                    <div className="font-medium">Mon portefeuille</div>
+                    <div>
+                      <div className="font-medium">Mon portefeuille</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/wallet/history" className="flex items-center gap-3 cursor-pointer">
                     <History className="w-4 h-4 text-blue-400" />
-                    <div className="font-medium">Historique des micro-investissements</div>
+                    <div>
+                      <div className="font-medium">Historique des micro-investissements</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/wallet/rewards" className="flex items-center gap-3 cursor-pointer">
                     <Trophy className="w-4 h-4 text-yellow-400" />
-                    <div className="font-medium">Mes gains & répartitions</div>
+                    <div>
+                      <div className="font-medium">Mes gains & répartitions</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/wallet/payment-methods" className="flex items-center gap-3 cursor-pointer">
                     <CreditCard className="w-4 h-4 text-green-400" />
-                    <div className="font-medium">Moyens de paiement</div>
+                    <div>
+                      <div className="font-medium">Moyens de paiement</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/wallet/education" className="flex items-center gap-3 cursor-pointer">
                     <GraduationCap className="w-4 h-4 text-purple-400" />
-                    <div className="font-medium">Centre pédagogique</div>
+                    <div>
+                      <div className="font-medium">Centre pédagogique</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -410,32 +440,42 @@ export function Navigation() {
                 <DropdownMenuItem asChild>
                   <Link href="/dashboard" className="flex items-center gap-3 cursor-pointer">
                     <LayoutDashboard className="w-4 h-4 text-purple-400" />
-                    <div className="font-medium">Tableau de bord</div>
+                    <div>
+                      <div className="font-medium">Tableau de bord</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href={`/profile/${user.id}`} className="flex items-center gap-3 cursor-pointer">
                     <User className="w-4 h-4 text-blue-400" />
-                    <div className="font-medium">Mon profil</div>
+                    <div>
+                      <div className="font-medium">Mon profil</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/profile/gamification" className="flex items-center gap-3 cursor-pointer">
                     <Award className="w-4 h-4 text-yellow-400" />
-                    <div className="font-medium">Mes badges & VISUpoints</div>
+                    <div>
+                      <div className="font-medium">Mes badges & VISUpoints</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/settings/account" className="flex items-center gap-3 cursor-pointer">
                     <Settings className="w-4 h-4 text-gray-400" />
-                    <div className="font-medium">Paramètres du compte</div>
+                    <div>
+                      <div className="font-medium">Paramètres du compte</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/settings/privacy" className="flex items-center gap-3 cursor-pointer">
                     <Shield className="w-4 h-4 text-blue-400" />
-                    <div className="font-medium">Confidentialité</div>
+                    <div>
+                      <div className="font-medium">Confidentialité</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -475,37 +515,49 @@ export function Navigation() {
                 <DropdownMenuItem asChild>
                   <Link href="/admin" className="flex items-center gap-3 cursor-pointer">
                     <LayoutDashboard className="w-4 h-4 text-red-400" />
-                    <div className="font-medium">Dashboard Admin</div>
+                    <div>
+                      <div className="font-medium">Dashboard Admin</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/admin/users" className="flex items-center gap-3 cursor-pointer">
                     <Users className="w-4 h-4 text-blue-400" />
-                    <div className="font-medium">Gestion utilisateurs</div>
+                    <div>
+                      <div className="font-medium">Gestion utilisateurs</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/admin/videos" className="flex items-center gap-3 cursor-pointer">
                     <Video className="w-4 h-4 text-purple-400" />
-                    <div className="font-medium">Gestion vidéos</div>
+                    <div>
+                      <div className="font-medium">Gestion vidéos</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/admin/moderation" className="flex items-center gap-3 cursor-pointer">
                     <AlertCircle className="w-4 h-4 text-yellow-400" />
-                    <div className="font-medium">Modération</div>
+                    <div>
+                      <div className="font-medium">Modération</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/admin/database" className="flex items-center gap-3 cursor-pointer">
                     <Database className="w-4 h-4 text-green-400" />
-                    <div className="font-medium">Base de données</div>
+                    <div>
+                      <div className="font-medium">Base de données</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/admin/settings" className="flex items-center gap-3 cursor-pointer">
                     <Cog className="w-4 h-4 text-gray-400" />
-                    <div className="font-medium">Paramètres système</div>
+                    <div>
+                      <div className="font-medium">Paramètres système</div>
+                    </div>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
