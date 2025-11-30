@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -77,27 +76,21 @@
 @theme inline {
   --font-sans: "Geist", "Geist Fallback";
   --font-mono: "Geist Mono", "Geist Mono Fallback";
-
   --color-visual-purple: #9333ea;
   --color-visual-purple-light: #a855f7;
   --color-visual-purple-dark: #7c3aed;
-
   --color-visual-blue: #2563eb;
   --color-visual-blue-light: #3b82f6;
   --color-visual-blue-dark: #1d4ed8;
-
   --color-traffic-red: #f87171;
   --color-traffic-yellow: #facc15;
   --color-traffic-green: #22c55e;
-
   --color-success: #16a34a;
   --color-warning: #f97316;
   --color-error: #ef4444;
-
   --color-gold: #facc15;
   --color-silver: #9ca3af;
   --color-bronze: #fb923c;
-
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -153,11 +146,9 @@
 
 body {
   font-family: var(--font-sans);
-  /* Adouci le fond violet - couleurs plus claires et moins saturées */
   background: radial-gradient(circle at center top, #3b1a7a 0%, #1a0a3d 60%, #0a0520 100%);
   color: var(--color-foreground);
   line-height: 1.5;
-  font-feature-settings: "rlig" 1, "calt" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
@@ -180,7 +171,6 @@ body {
 }
 
 .glass-card {
-  /* Glass card avec purple plus clair */
   background: rgba(91, 44, 168, 0.25);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(167, 139, 250, 0.25);
@@ -189,14 +179,13 @@ body {
 
 .neon-title {
   color: #4ade80;
-  text-shadow: 0 0 10px rgba(74, 222, 128, 0.5), 0 0 20px rgba(74, 222, 128, 0.3), 0 0 30px rgba(74, 222, 128, 0.1);
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.5), 0 0 20px rgba(74, 222, 128, 0.3);
   background: linear-gradient(to bottom, #86efac, #22c55e);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .btn-gradient {
-  /* Bouton gradient avec purple plus clair */
   background: linear-gradient(to right, #a78bfa, #8b5cf6);
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
@@ -234,11 +223,11 @@ body {
   0%,
   100% {
     opacity: 1;
-    box-shadow: 0 0 20px var(--color-traffic-red);
+    box-shadow: 0 0 20px #f87171;
   }
   50% {
     opacity: 0.5;
-    box-shadow: 0 0 5px var(--color-traffic-red);
+    box-shadow: 0 0 5px #f87171;
   }
 }
 
@@ -246,11 +235,11 @@ body {
   0%,
   100% {
     opacity: 0.5;
-    box-shadow: 0 0 5px var(--color-traffic-yellow);
+    box-shadow: 0 0 5px #facc15;
   }
   50% {
     opacity: 1;
-    box-shadow: 0 0 20px var(--color-traffic-yellow);
+    box-shadow: 0 0 20px #facc15;
   }
 }
 
@@ -258,22 +247,20 @@ body {
   0%,
   100% {
     opacity: 0.5;
-    box-shadow: 0 0 5px var(--color-traffic-green);
+    box-shadow: 0 0 5px #22c55e;
   }
   50% {
     opacity: 1;
-    box-shadow: 0 0 20px var(--color-traffic-green);
+    box-shadow: 0 0 20px #22c55e;
   }
 }
 
 .animate-pulse-red {
   animation: pulse-red 2s ease-in-out infinite;
 }
-
 .animate-pulse-yellow {
   animation: pulse-yellow 2s ease-in-out infinite 0.7s;
 }
-
 .animate-pulse-green {
   animation: pulse-green 2s ease-in-out infinite 1.4s;
 }
@@ -289,11 +276,9 @@ body {
 .animate-ping {
   animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
-
 .animation-delay-1000 {
   animation-delay: 1000ms;
 }
-
 .animation-delay-2000 {
   animation-delay: 2000ms;
 }
@@ -314,49 +299,18 @@ body {
 @keyframes tricolor-sync {
   0% {
     background-position: 0% 50%;
-    filter: brightness(1.5) drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
   }
-  30% {
-    background-position: 25% 50%;
-    filter: brightness(1.5) drop-shadow(0 0 20px rgba(245, 158, 11, 0.8));
-  }
-  33.33% {
-    background-position: 50% 50%;
-    filter: brightness(1.5) drop-shadow(0 0 20px rgba(250, 204, 21, 0.8));
-  }
-  63.33% {
-    background-position: 75% 50%;
-    filter: brightness(1.5) drop-shadow(0 0 20px rgba(132, 204, 22, 0.8));
-  }
-  66.66% {
+  50% {
     background-position: 100% 50%;
-    filter: brightness(1.5) drop-shadow(0 0 20px rgba(34, 197, 94, 0.8));
-  }
-  96.66% {
-    background-position: 125% 50%;
-    filter: brightness(1.5) drop-shadow(0 0 20px rgba(239, 68, 68, 0.6));
   }
   100% {
-    background-position: 150% 50%;
-    filter: brightness(1.5) drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
+    background-position: 0% 50%;
   }
 }
 
 .gradient-tricolor-animated {
-  background: linear-gradient(
-    90deg,
-    #ef4444 0%,
-    #ef4444 10%,
-    #f59e0b 20%,
-    #facc15 30%,
-    #facc15 40%,
-    #84cc16 50%,
-    #22c55e 60%,
-    #22c55e 70%,
-    #ef4444 80%,
-    #ef4444 100%
-  );
-  background-size: 200% 100%;
+  background: linear-gradient(90deg, #ef4444, #facc15, #22c55e, #ef4444);
+  background-size: 300% 100%;
   animation: tricolor-sync 6s ease-in-out infinite;
   -webkit-background-clip: text;
   background-clip: text;

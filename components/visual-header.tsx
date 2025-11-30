@@ -164,7 +164,7 @@ export function VisualHeader() {
                 <Star className="mr-3 h-5 w-5 text-amber-400 group-hover:scale-110 transition-transform" />
                 <div className="flex flex-col">
                   <span className="font-semibold">Investi-lecteur</span>
-                  <span className="text-xs text-gray-400">Regardez et investissez</span>
+                  <span className="text-xs text-gray-400">Lisez et Investissez</span>
                 </div>
               </DropdownMenuItem>
 

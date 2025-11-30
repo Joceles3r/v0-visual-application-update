@@ -92,50 +92,55 @@ export default function Home() {
               <div className="grid grid-cols-2 md:grid-cols-5 border-b border-white/10">
                 <button
                   onClick={() => setActiveRole("visitor")}
-                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeRole === "visitor"
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+                    activeRole === "visitor"
                       ? "bg-gradient-to-br from-blue-600/40 to-blue-900/40 text-white border-b-4 border-blue-400"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
-                    }`}
+                  }`}
                 >
                   <Eye className="w-5 h-5 mx-auto mb-2" />
                   Visiteur
                 </button>
                 <button
                   onClick={() => setActiveRole("creator")}
-                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeRole === "creator"
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+                    activeRole === "creator"
                       ? "bg-gradient-to-br from-purple-600/40 to-purple-900/40 text-white border-b-4 border-purple-400"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
-                    }`}
+                  }`}
                 >
                   <Film className="w-5 h-5 mx-auto mb-2" />
                   Porteur
                 </button>
                 <button
                   onClick={() => setActiveRole("investor")}
-                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeRole === "investor"
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+                    activeRole === "investor"
                       ? "bg-gradient-to-br from-green-600/40 to-green-900/40 text-white border-b-4 border-green-400"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
-                    }`}
+                  }`}
                 >
                   <Wallet className="w-5 h-5 mx-auto mb-2" />
                   Investisseur
                 </button>
                 <button
                   onClick={() => setActiveRole("affiliate")}
-                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${activeRole === "affiliate"
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
+                    activeRole === "affiliate"
                       ? "bg-gradient-to-br from-cyan-600/40 to-cyan-900/40 text-white border-b-4 border-cyan-400"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
-                    }`}
+                  }`}
                 >
                   <Megaphone className="w-5 h-5 mx-auto mb-2" />
                   Infoporteur
                 </button>
                 <button
                   onClick={() => setActiveRole("viewer-investor")}
-                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 col-span-2 md:col-span-1 ${activeRole === "viewer-investor"
+                  className={`py-6 px-4 text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-300 col-span-2 md:col-span-1 ${
+                    activeRole === "viewer-investor"
                       ? "bg-gradient-to-br from-amber-600/40 to-amber-900/40 text-white border-b-4 border-amber-400"
                       : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
-                    }`}
+                  }`}
                 >
                   <BookOpen className="w-5 h-5 mx-auto mb-2" />
                   Investi-lecteur
@@ -592,8 +597,8 @@ export default function Home() {
                     <p className="text-gray-300 mb-6 text-base leading-relaxed">
                       Profitez du meilleur des deux mondes : lisez et investissez dans vos projets préférés.
                       <br />
-                      <br />
-                      ⭐ Le meilleur des 2 mondes ! Lisez gratuitement ET investissez pour maximiser vos gains. Double récompense !
+                      <br />⭐ Le meilleur des 2 mondes ! Lisez gratuitement ET investissez pour maximiser vos gains.
+                      Double récompense !
                     </p>
 
                     <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -1106,12 +1111,12 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">Investi-lecteur</h3>
               <p className="text-gray-400 mb-6 leading-relaxed">
-                Profitez du meilleur des deux mondes : regardez et investissez dans vos projets préférés.
+                Profitez du meilleur des deux mondes : lisez et investissez dans vos projets préférés.
               </p>
               <div className="mb-6 p-4 bg-amber-500/10 rounded-xl border border-amber-500/20">
                 <p className="text-sm text-amber-300 leading-relaxed">
-                  <span className="font-semibold">⭐ Le meilleur des 2 mondes</span> ! Visionnez gratuitement ET
-                  investissez pour maximiser vos gains. Double récompense !
+                  <span className="font-semibold">⭐ Le meilleur des 2 mondes</span> ! Lisez gratuitement ET investissez
+                  pour maximiser vos gains. Double récompense !
                 </p>
               </div>
               <Button
