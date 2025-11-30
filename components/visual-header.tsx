@@ -102,13 +102,15 @@ export function VisualHeader() {
 
               <DropdownMenuSeparator className="bg-white/10" />
 
-              <DropdownMenuItem className="focus:bg-purple-600/50 focus:text-white cursor-pointer group py-3">
-                <HelpCircle className="mr-3 h-5 w-5 text-green-400 group-hover:scale-110 transition-transform" />
-                <div className="flex flex-col">
-                  <span className="font-semibold">FAQ / Questions Fréquentes</span>
-                  <span className="text-xs text-gray-400">Tout ce que vous devez savoir</span>
-                </div>
-              </DropdownMenuItem>
+              <Link href="/faq" className="w-full">
+                <DropdownMenuItem className="focus:bg-purple-600/50 focus:text-white cursor-pointer group py-3">
+                  <HelpCircle className="mr-3 h-5 w-5 text-green-400 group-hover:scale-110 transition-transform" />
+                  <div className="flex flex-col">
+                    <span className="font-semibold">FAQ / Questions Fréquentes</span>
+                    <span className="text-xs text-gray-400">Tout ce que vous devez savoir</span>
+                  </div>
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuContent>
           </DropdownMenu>
 
