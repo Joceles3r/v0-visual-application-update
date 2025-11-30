@@ -27,6 +27,11 @@ export default function AdminDashboard() {
     async function loadAdminData() {
       const supabase = getSupabaseBrowserClient()
 
+      if (!supabase) {
+        router.push("/login?redirect=/admin")
+        return
+      }
+
       const {
         data: { user },
       } = await supabase.auth.getUser()
