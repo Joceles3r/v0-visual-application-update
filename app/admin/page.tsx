@@ -25,46 +25,54 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     async function loadAdminData() {
-      const supabase = getSupabaseBrowserClient()
+      try {
+        const supabase = getSupabaseBrowserClient()
 
-      if (!supabase) {
+        if (!supabase) {
+          router.push("/login?redirect=/admin")
+          return
+        }
+
+        // Type assertion to help TypeScript understand the type after null check
+        const client = supabase as NonNullable<typeof supabase>
+
+        const {
+          data: { user },
+        } = await client.auth.getUser()
+
+        if (!user) {
+          router.push("/login?redirect=/admin")
+          return
+        }
+
+        const { data: profile } = await client.from("users").select("role, full_name, email").eq("id", user.id).single()
+
+        if (!profile || profile.role !== "admin") {
+          router.push("/")
+          return
+        }
+
+        setUserData(profile)
+
+        const [usersCount, videosCount, commentsCount, totalVisupoints] = await Promise.all([
+          client.from("users").select("*", { count: "exact", head: true }),
+          client.from("videos").select("*", { count: "exact", head: true }),
+          client.from("comments").select("*", { count: "exact", head: true }),
+          client.from("users").select("visupoints"),
+        ])
+
+        setStats({
+          users: usersCount.count || 0,
+          videos: videosCount.count || 0,
+          comments: commentsCount.count || 0,
+          totalVisupoints: totalVisupoints.data?.reduce((sum, u) => sum + (u.visupoints || 0), 0) || 0,
+        })
+
+        setLoading(false)
+      } catch (error) {
+        console.error("[v0] Admin dashboard error:", error)
         router.push("/login?redirect=/admin")
-        return
       }
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (!user) {
-        router.push("/login?redirect=/admin")
-        return
-      }
-
-      const { data: profile } = await supabase.from("users").select("role, full_name, email").eq("id", user.id).single()
-
-      if (!profile || profile.role !== "admin") {
-        router.push("/")
-        return
-      }
-
-      setUserData(profile)
-
-      const [usersCount, videosCount, commentsCount, totalVisupoints] = await Promise.all([
-        supabase.from("users").select("*", { count: "exact", head: true }),
-        supabase.from("videos").select("*", { count: "exact", head: true }),
-        supabase.from("comments").select("*", { count: "exact", head: true }),
-        supabase.from("users").select("visupoints"),
-      ])
-
-      setStats({
-        users: usersCount.count || 0,
-        videos: videosCount.count || 0,
-        comments: commentsCount.count || 0,
-        totalVisupoints: totalVisupoints.data?.reduce((sum, u) => sum + (u.visupoints || 0), 0) || 0,
-      })
-
-      setLoading(false)
     }
 
     loadAdminData()

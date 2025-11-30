@@ -1,26 +1,33 @@
-let createClient: any = null
-const clientInstance: any = null
-let supabaseAvailable = false
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 
-// Try to load Supabase dynamically
-if (typeof window !== "undefined") {
-  import("@supabase/supabase-js")
-    .then((module) => {
-      createClient = module.createClient
-      supabaseAvailable = true
-    })
-    .catch((err) => {
-      console.warn("[v0] Supabase module not available:", err.message)
-    })
-}
+let supabaseClient: SupabaseClient | null = null
 
-export function getSupabaseBrowserClient() {
-  // In v0 environment, Supabase browser client is not available
-  // All auth should be handled server-side via getSupabaseServerClient
-  console.warn(
-    "[v0] Browser Supabase client is disabled in v0 environment. Use getSupabaseServerClient for server-side operations.",
-  )
-  return null
+export function getSupabaseBrowserClient(): SupabaseClient | null {
+  // Check if we're in a browser environment
+  if (typeof window === "undefined") {
+    return null
+  }
+
+  // Check if environment variables are available
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn("[v0] Supabase environment variables not configured")
+    return null
+  }
+
+  // Create singleton client
+  if (!supabaseClient) {
+    supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    })
+  }
+
+  return supabaseClient
 }
 
 // Alias for compatibility
