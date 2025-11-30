@@ -16,6 +16,10 @@ export async function POST(request: NextRequest) {
 
     const supabase = getSupabaseBrowserClient()
 
+    if (!supabase) {
+      return NextResponse.json({ error: "Service de base de données non disponible" }, { status: 503 })
+    }
+
     // Mettre à jour le rôle de l'utilisateur spécifié en admin
     const { data, error } = await supabase.from("users").update({ role: "admin" }).eq("email", email).select()
 
