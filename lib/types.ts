@@ -3,11 +3,12 @@ export interface User {
   email: string
   full_name: string
   avatar_url?: string
+  role?: "visiteur" | "porteur" | "investisseur" | "infoporteur" | "investi-lecteur" | "admin"
   visupoints: number
   total_views: number
   total_clicks: number
-  created_at: string
-  updated_at: string
+  created_at?: string
+  updated_at?: string
 }
 
 export interface Video {
@@ -19,7 +20,7 @@ export interface Video {
   thumbnail_url?: string
   duration?: number
   views: number
-  status: 'draft' | 'published' | 'archived'
+  status: "draft" | "published" | "archived"
   created_at: string
   updated_at: string
   user?: User
@@ -30,7 +31,7 @@ export interface Badge {
   name: string
   description?: string
   icon: string
-  requirement_type: 'views' | 'videos' | 'visupoints'
+  requirement_type: "views" | "videos" | "visupoints"
   requirement_value: number
   created_at: string
 }

@@ -19,6 +19,7 @@ const mockVideos: Video[] = [
     views: 15420,
     clicks: 892,
     created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     user: {
       id: "demo-user-1",
       full_name: "VISUAL Team",
@@ -41,6 +42,7 @@ const mockVideos: Video[] = [
     views: 8750,
     clicks: 523,
     created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     user: {
       id: "demo-user-2",
       full_name: "Marie Créatrice",
@@ -63,6 +65,7 @@ const mockVideos: Video[] = [
     views: 12300,
     clicks: 756,
     created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     user: {
       id: "demo-user-3",
       full_name: "Jean Investisseur",
@@ -85,6 +88,7 @@ const mockVideos: Video[] = [
     views: 23100,
     clicks: 1245,
     created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     user: {
       id: "demo-user-4",
       full_name: "Tech Analyst",
@@ -107,6 +111,7 @@ const mockVideos: Video[] = [
     views: 18900,
     clicks: 1023,
     created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     user: {
       id: "demo-user-5",
       full_name: "Chef Marco",
@@ -129,6 +134,7 @@ const mockVideos: Video[] = [
     views: 45200,
     clicks: 2890,
     created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     user: {
       id: "demo-user-6",
       full_name: "FitCoach Sarah",
@@ -151,6 +157,7 @@ const mockVideos: Video[] = [
     views: 31500,
     clicks: 1876,
     created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     user: {
       id: "demo-user-7",
       full_name: "DevPro Lucas",
@@ -173,6 +180,7 @@ const mockVideos: Video[] = [
     views: 27800,
     clicks: 1654,
     created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
     user: {
       id: "demo-user-8",
       full_name: "Travel Emma",
