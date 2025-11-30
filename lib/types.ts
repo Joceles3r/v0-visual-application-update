@@ -20,6 +20,7 @@ export interface Video {
   thumbnail_url?: string
   duration?: number
   views: number
+  clicks: number
   status: "draft" | "published" | "archived"
   created_at: string
   updated_at: string
