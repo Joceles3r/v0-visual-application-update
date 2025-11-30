@@ -31,6 +31,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { LanguageSelector } from "@/components/language-selector"
 
 export function VisualHeader() {
   return (
@@ -284,6 +285,11 @@ export function VisualHeader() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {/* Language Selector */}
+          <div className="ml-2">
+            <LanguageSelector />
+          </div>
 
           {/* Auth Buttons */}
           <Link href="/login">
