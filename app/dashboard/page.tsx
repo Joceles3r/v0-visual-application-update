@@ -25,6 +25,12 @@ export default function DashboardPage() {
       console.log("[v0] Loading dashboard...")
       const supabase = createBrowserClient()
 
+      if (!supabase) {
+        console.log("[v0] Supabase client not available, redirecting to login")
+        router.push("/login")
+        return
+      }
+
       const { data: sessionData } = await supabase.auth.getSession()
       console.log("[v0] Session check:", sessionData.session?.user?.id)
 
