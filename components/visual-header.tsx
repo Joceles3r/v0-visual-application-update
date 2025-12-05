@@ -82,7 +82,7 @@ export function VisualHeader() {
         </div>
 
         {/* Zone droite : menus + langues + auth */}
-        <div className="flex items-center gap-2 z-10">
+        <div className="flex items-center gap-2 z-10 flex-wrap justify-end">
           {/* 1. Découvrir VISUAL */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
