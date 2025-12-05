@@ -16,6 +16,11 @@ export default function LeaderboardPage() {
     async function loadLeaderboard() {
       const supabase = getSupabaseBrowserClient()
 
+      if (!supabase) {
+        setLoading(false)
+        return
+      }
+
       const { data: topUsers } = await supabase
         .from("users")
         .select(`
@@ -28,7 +33,7 @@ export default function LeaderboardPage() {
       if (topUsers) {
         const usersWithVideoCounts = await Promise.all(
           topUsers.map(async (user, index) => {
-            const { count: videoCount } = await supabase
+            const { count: videoCount } = await supabase!
               .from("videos")
               .select("*", { count: "exact", head: true })
               .eq("user_id", user.id)
