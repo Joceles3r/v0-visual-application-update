@@ -28,6 +28,12 @@ export default function LoginPage() {
 
     const supabase = getSupabaseBrowserClient()
 
+    if (!supabase) {
+      setError("Service de connexion non disponible. Veuillez réessayer plus tard.")
+      setLoading(false)
+      return
+    }
+
     const { data: authData, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,

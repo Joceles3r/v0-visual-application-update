@@ -27,6 +27,12 @@ export default function SignupPage() {
     try {
       const supabase = getSupabaseBrowserClient()
 
+      if (!supabase) {
+        setError("Service d'inscription non disponible. Veuillez réessayer plus tard.")
+        setLoading(false)
+        return
+      }
+
       const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
