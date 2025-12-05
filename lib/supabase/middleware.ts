@@ -1,4 +1,3 @@
-import { createClient } from "@supabase/supabase-js"
 import { NextResponse, type NextRequest } from "next/server"
 
 export async function updateSession(request: NextRequest) {
@@ -11,6 +10,15 @@ export async function updateSession(request: NextRequest) {
 
   if (!supabaseUrl || !supabaseAnonKey) {
     console.warn("[v0] Supabase environment variables not configured. Skipping auth middleware.")
+    return supabaseResponse
+  }
+
+  let createClient
+  try {
+    const supabaseModule = await import("@supabase/supabase-js")
+    createClient = supabaseModule.createClient
+  } catch (error) {
+    console.warn("[v0] Failed to load @supabase/supabase-js in middleware:", error)
     return supabaseResponse
   }
 

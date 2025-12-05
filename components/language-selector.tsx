@@ -2,12 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Globe } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 
 type Language = {
@@ -28,10 +23,11 @@ export function LanguageSelector() {
   const [selectedLang, setSelectedLang] = useState<string>("fr")
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-    const stored = window.localStorage.getItem("visual_lang")
-    if (stored) {
-      setSelectedLang(stored)
+    try {
+      const stored = window.localStorage.getItem("visual_lang")
+      if (stored) setSelectedLang(stored)
+    } catch {
+      // Ignore localStorage errors
     }
   }, [])
 
@@ -39,11 +35,12 @@ export function LanguageSelector() {
 
   const handleChange = (code: string) => {
     setSelectedLang(code)
-    if (typeof window !== "undefined") {
+    try {
       window.localStorage.setItem("visual_lang", code)
+    } catch {
+      // Ignore localStorage errors
     }
     console.log("[VISUAL] Language changed to:", code)
-    // TODO: brancher ici le système i18n global quand il sera prêt
   }
 
   return (
@@ -51,25 +48,28 @@ export function LanguageSelector() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          size="sm"
-          className="bg-purple-900/30 hover:bg-purple-800/50 text-white rounded-lg border border-white/10 h-10 px-4 text-sm font-medium transition-all duration-300 hover:border-purple-500/70 hover:scale-105 hover:shadow-lg hover:shadow-purple-900/30 gap-2"
+          className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-purple-400/60 h-10 px-3 rounded-full text-xs font-semibold text-white"
         >
-          <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{current.code.toUpperCase()}</span>
+          <Globe className="w-4 h-4" />
+          <span className="hidden sm:inline">{current.flag}</span>
+          <span className="hidden md:inline">{current.label}</span>
+          <span className="inline md:hidden">{current.code.toUpperCase()}</span>
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align="end"
-        className="w-48 bg-gradient-to-b from-[#1a103c] to-[#0f0529] border-purple-500/30 text-white backdrop-blur-2xl shadow-2xl shadow-purple-900/50"
+        className="bg-gradient-to-b from-[#1a103c] to-[#0f0529] border border-purple-500/40 text-white backdrop-blur-2xl shadow-2xl min-w-[190px]"
       >
         {LANGUAGES.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => handleChange(lang.code)}
-            className="cursor-pointer focus:bg-purple-600/50 focus:text-white py-2.5"
+            className={`flex items-center gap-2 py-2.5 text-sm cursor-pointer ${
+              lang.code === selectedLang ? "bg-purple-600/60 text-white" : "hover:bg-purple-700/40"
+            }`}
           >
-            <span className="mr-2 text-lg">{lang.flag}</span>
+            <span className="w-6 text-lg">{lang.flag}</span>
             <span>{lang.label}</span>
           </DropdownMenuItem>
         ))}

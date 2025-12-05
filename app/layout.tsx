@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist } from "next/font/google"
 import "./globals.css"
+import { VisualHeader } from "@/components/visual-header"
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -47,7 +48,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`${geistSans.className} antialiased`}>{children}</body>
+      <body className={`${geistSans.className} antialiased bg-black text-white`}>
+        <VisualHeader />
+        <main className="pt-20">{children}</main>
+      </body>
     </html>
   )
 }
